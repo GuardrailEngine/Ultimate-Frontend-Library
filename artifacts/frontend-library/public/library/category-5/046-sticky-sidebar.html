@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sticky Sidebar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#0d1016; --surface:#151b25; --line:#293548; --text:#f0f4fc; --muted:#8996aa; --blue:#6e9fff; --green:#66d5a3; }
+    * { box-sizing:border-box; } html { scroll-behavior:smooth; } body { margin:0; color:var(--text); background:radial-gradient(circle at 80% 0,#1d2f4d,transparent 35%),var(--bg); font:15px/1.6 "DM Sans",sans-serif; } .layout { display:grid; grid-template-columns:260px minmax(0,700px); gap:80px; width:min(1050px,calc(100% - 36px)); margin:7vh auto; } aside { position:sticky; top:30px; align-self:start; } .eyebrow { color:var(--blue); font-weight:700; letter-spacing:.14em; text-transform:uppercase; } aside h1 { margin:10px 0; font-size:31px; line-height:1; letter-spacing:-.08em; } aside p { margin:0 0 27px; color:var(--muted); } nav { display:grid; gap:4px; border-left:1px solid var(--line); } nav a { padding:7px 15px; color:var(--muted); text-decoration:none; } nav a:hover { color:var(--text); } nav a.active { margin-left:-1px; border-left:2px solid var(--green); color:var(--green); }
+    .content { display:grid; gap:65px; } section { scroll-margin-top:35px; } section h2 { margin:0 0 12px; font-size:clamp(32px,5vw,55px); line-height:1; letter-spacing:-.08em; } section p { margin:0; color:var(--muted); font-size:17px; } .quote { margin-top:25px; padding:20px; border-left:3px solid var(--green); color:#bfccd8; background:#ffffff07; } .meta { margin-bottom:17px; color:var(--green); font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; } .button { display:inline-block; margin-top:25px; padding:10px 15px; border:1px solid var(--line); border-radius:8px; color:var(--text); text-decoration:none; }
+    @media(max-width:760px) { .layout { display:block; width:calc(100% - 28px); } aside { position:static; margin-bottom:45px; } nav { display:flex; overflow:auto; border-left:0; border-bottom:1px solid var(--line); } nav a { white-space:nowrap; padding:9px 12px; } nav a.active { margin-bottom:-1px; border-bottom:2px solid var(--green); border-left:0; } }
+  </style>
+</head>
+<body>
+  <main class="layout"><aside><span class="eyebrow">The handbook</span><h1>Small choices, held together.</h1><p>A sticky index keeps the reader oriented through a long, useful page.</p><nav aria-label="On this page"><a class="active" href="#principle">Principle</a><a href="#practice">Practice</a><a href="#measure">Measure</a></nav></aside><article class="content"><section id="principle"><div class="meta">01 / Principle</div><h2>Make the system visible.</h2><p>People can only make good decisions about work they can see. A clear structure turns a long page into a series of understandable moments.</p><div class="quote">“The sidebar is not an ornament. It is a promise that the reader will never be lost.”</div></section><section id="practice"><div class="meta">02 / Practice</div><h2>Keep the context close.</h2><p>As the content changes, the navigation stays nearby. This removes the friction of remembering where a section belongs and lets attention stay with the idea.</p><a class="button" href="#measure">Continue reading ↓</a></section><section id="measure"><div class="meta">03 / Measure</div><h2>Notice what people return to.</h2><p>A good information architecture gives you a useful signal: which questions are worth making easier next time.</p><div class="quote">The layout is doing its job when the reader remembers the content, not the navigation.</div></section></article></main>
+  <script>
+    const links = [...document.querySelectorAll("nav a")], sections = [...document.querySelectorAll("section")]; const observer = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) links.forEach(link => link.classList.toggle("active", link.getAttribute("href") === `#${entry.target.id}`)); }), { rootMargin:"-20% 0px -65% 0px" }); sections.forEach(section => observer.observe(section));
+  </script>
+</body>
+</html>

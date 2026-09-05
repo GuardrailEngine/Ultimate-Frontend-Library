@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Command Palette</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#0a0d12; --surface:#141a23; --surface-2:#1e2734; --line:#2b3748; --text:#f1f5fd; --muted:#8996a9; --accent:#70d7c5; }
+    * { box-sizing:border-box; } body { margin:0; min-height:100vh; color:var(--text); background:radial-gradient(circle at 15% 10%,#17353a,transparent 32%),var(--bg); font:15px/1.5 "DM Sans",sans-serif; } button { font:inherit; }
+    .page { max-width:1040px; margin:auto; padding:36px 24px 100px; } header { display:flex; justify-content:space-between; align-items:center; margin-bottom:100px; } .logo { color:var(--text); font-size:19px; font-weight:700; letter-spacing:-.05em; } .logo b { color:var(--accent); } .shortcut { display:flex; align-items:center; gap:6px; padding:8px 11px; border:1px solid var(--line); border-radius:8px; color:var(--muted); background:var(--surface); cursor:pointer; } kbd { padding:1px 5px; border:1px solid #ffffff2b; border-radius:4px; color:var(--text); background:#ffffff0a; font-size:12px; }
+    .hero { max-width:680px; } .hero small { color:var(--accent); text-transform:uppercase; letter-spacing:.14em; font-weight:700; } h1 { margin:15px 0; font-size:clamp(43px,7vw,82px); line-height:.98; letter-spacing:-.08em; } .hero p { color:var(--muted); font-size:18px; }
+    .tips { display:flex; gap:10px; margin-top:50px; flex-wrap:wrap; } .tips span { padding:7px 10px; border:1px solid var(--line); border-radius:8px; color:var(--muted); font-size:13px; }
+    .scrim { position:fixed; z-index:10; inset:0; display:grid; place-items:start center; padding:13vh 18px 20px; background:#0009; opacity:0; visibility:hidden; transition:.2s; } .scrim.open { opacity:1; visibility:visible; } .palette { width:min(650px,100%); overflow:hidden; border:1px solid #52627a; border-radius:15px; background:var(--surface); box-shadow:0 25px 80px #000b; transform:translateY(-10px) scale(.98); transition:.2s; } .open .palette { transform:none; }
+    .search-row { display:flex; align-items:center; gap:12px; padding:16px 18px; border-bottom:1px solid var(--line); } .search-row svg { width:20px; fill:none; stroke:var(--muted); stroke-width:2; } #search { width:100%; border:0; outline:0; color:var(--text); background:transparent; font-size:17px; } .esc { color:var(--muted); font-size:12px; }
+    .groups { max-height:380px; overflow:auto; padding:8px; } .group-label { padding:10px 10px 5px; color:var(--muted); font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; } .command { display:flex; align-items:center; gap:13px; width:100%; padding:12px 10px; border:0; border-radius:9px; color:var(--text); background:transparent; text-align:left; cursor:pointer; } .command:hover, .command.selected { background:var(--surface-2); } .command .command-icon { display:grid; place-items:center; width:28px; height:28px; border-radius:7px; color:var(--accent); background:#70d7c514; } .command small { margin-left:auto; color:var(--muted); } .empty { padding:30px; color:var(--muted); text-align:center; } .footer { display:flex; gap:16px; padding:12px 18px; border-top:1px solid var(--line); color:var(--muted); font-size:12px; } .footer span { display:flex; align-items:center; gap:5px; }
+    .toast { position:fixed; right:24px; bottom:24px; padding:13px 16px; border:1px solid #70d7c566; border-radius:10px; color:var(--text); background:#14251f; opacity:0; transform:translateY(10px); transition:.2s; } .toast.show { opacity:1; transform:none; }
+  </style>
+</head>
+<body>
+  <main class="page"><header><div class="logo">command<b>/</b>space</div><button class="shortcut" id="openPalette" type="button" aria-haspopup="dialog"><kbd>⌘</kbd><kbd>K</kbd></button></header><section class="hero"><small>Keyboard-first workspace</small><h1>Everything you need, one keystroke away.</h1><p>Open the command palette to jump between projects, change your view, or search your entire workspace without reaching for the mouse.</p><div class="tips"><span>⌘ K to open</span><span>↑ ↓ to navigate</span><span>↵ to run</span></div></section></main>
+  <div class="scrim" id="scrim" role="dialog" aria-modal="true" aria-label="Command palette">
+    <div class="palette">
+      <div class="search-row"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input id="search" type="search" placeholder="Search commands..." autocomplete="off"><span class="esc">ESC</span></div>
+      <div class="groups" id="commands"></div><div class="footer"><span>↑↓ Navigate</span><span>↵ Select</span><span>esc Close</span></div>
+    </div>
+  </div><div class="toast" id="toast" role="status"></div>
+  <script>
+    const allCommands = [
+      { icon:"↗", group:"Navigate", name:"Open analytics", hint:"Go to /analytics", action:"Analytics opened" },
+      { icon:"⌁", group:"Navigate", name:"Open projects", hint:"Go to /projects", action:"Projects opened" },
+      { icon:"⌕", group:"Actions", name:"Search workspace", hint:"Find anything", action:"Workspace search ready" },
+      { icon:"＋", group:"Actions", name:"Create new project", hint:"⌘ N", action:"New project draft created" },
+      { icon:"☾", group:"Preferences", name:"Toggle dark mode", hint:"Appearance", action:"Dark mode is already on" }
+    ];
+    const scrim = document.querySelector("#scrim"), search = document.querySelector("#search"), list = document.querySelector("#commands"), toast = document.querySelector("#toast"); let index = 0;
+    function visible() { const query = search.value.toLowerCase(); return allCommands.filter(c => `${c.name} ${c.group} ${c.hint}`.toLowerCase().includes(query)); }
+    function render() { const items = visible(); index = Math.max(0, Math.min(index, items.length - 1)); list.innerHTML = items.length ? [...new Set(items.map(c => c.group))].map(group => `<div class="group-label">${group}</div>${items.filter(c => c.group === group).map((c, i) => `<button class="command ${items.indexOf(c) === index ? "selected" : ""}" data-name="${c.name}" type="button"><span class="command-icon">${c.icon}</span><span>${c.name}</span><small>${c.hint}</small></button>`).join("")}`).join("") : `<div class="empty">No commands match “${search.value}”</div>`; list.querySelectorAll(".command").forEach(button => button.addEventListener("click", () => run(button.dataset.name))); }
+    function open() { scrim.classList.add("open"); search.value = ""; index = 0; render(); setTimeout(() => search.focus(), 30); }
+    function close() { scrim.classList.remove("open"); document.querySelector("#openPalette").focus(); }
+    function run(name) { const command = allCommands.find(c => c.name === name); close(); toast.textContent = command.action; toast.classList.add("show"); setTimeout(() => toast.classList.remove("show"), 2200); }
+    document.querySelector("#openPalette").addEventListener("click", open); search.addEventListener("input", () => { index = 0; render(); }); scrim.addEventListener("click", e => { if (e.target === scrim) close(); });
+    document.addEventListener("keydown", e => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); open(); } if (!scrim.classList.contains("open")) return; const items = visible(); if (e.key === "Escape") close(); if (e.key === "ArrowDown") { e.preventDefault(); index = Math.min(index + 1, items.length - 1); render(); } if (e.key === "ArrowUp") { e.preventDefault(); index = Math.max(index - 1, 0); render(); } if (e.key === "Enter" && items[index]) run(items[index].name); });
+  </script>
+</body>
+</html>

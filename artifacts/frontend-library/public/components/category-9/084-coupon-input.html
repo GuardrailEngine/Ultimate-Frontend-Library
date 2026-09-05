@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coupon Input</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#f4f7fb; --surface:#fff; --ink:#1d2734; --muted:#84909e; --line:#dfe6ee; --blue:#477ee0; --green:#3aae7b; --red:#d75c67; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--ink); background:linear-gradient(145deg,#f4f7fb,#e7ecff); font:14px/1.5 "DM Sans",sans-serif; } .card { width:min(470px,calc(100% - 36px)); padding:31px; border:1px solid var(--line); border-radius:18px; background:var(--surface); box-shadow:0 20px 55px #34487512; } .top { display:flex; align-items:start; gap:14px; } .icon { display:grid; place-items:center; width:40px; height:40px; border-radius:10px; color:var(--blue); background:#e9f0ff; font-size:20px; } h1 { margin:0 0 5px; font-size:23px; letter-spacing:-.06em; } .top p { margin:0; color:var(--muted); } form { display:flex; gap:8px; margin-top:28px; } input { min-width:0; flex:1; padding:12px; border:1px solid var(--line); border-radius:8px; outline:0; text-transform:uppercase; } input:focus { border-color:var(--blue); } button { padding:11px 14px; border:0; border-radius:8px; color:#fff; background:var(--blue); cursor:pointer; font-weight:700; } .message { min-height:21px; margin-top:11px; font-size:12px; } .message.success { color:var(--green); } .message.error { color:var(--red); } .summary { display:flex; justify-content:space-between; margin-top:23px; padding-top:17px; border-top:1px solid var(--line); color:var(--muted); } .summary strong { color:var(--green); }
+  </style>
+</head>
+<body>
+  <main class="card"><div class="top"><div class="icon">%</div><div><h1>Have a coupon?</h1><p>Apply your code before you complete your order.</p></div></div><form id="form"><input id="coupon" placeholder="Enter code" aria-label="Coupon code"><button type="submit">Apply</button></form><div class="message" id="message" role="status"></div><div class="summary"><span>Order total</span><strong id="total">$212.00</strong></div></main>
+  <script>
+    const form=document.querySelector("#form"),input=document.querySelector("#coupon"),message=document.querySelector("#message"),total=document.querySelector("#total"); form.addEventListener("submit",e=>{e.preventDefault();const code=input.value.trim().toUpperCase();if(code==="WELCOME20"){message.className="message success";message.textContent="20% discount applied ✓";total.textContent="$169.60";input.disabled=true;e.submitter.disabled=true;e.submitter.textContent="Applied"}else{message.className="message error";message.textContent="That code is not valid. Try WELCOME20.";input.focus()}});
+  </script>
+</body>
+</html>

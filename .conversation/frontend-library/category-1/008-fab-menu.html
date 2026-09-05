@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAB Menu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#f4f7f3; --surface:#fff; --ink:#17221b; --muted:#718077; --green:#2f9b70; --line:#dfe8e0; }
+    * { box-sizing:border-box; } body { margin:0; min-height:100vh; color:var(--ink); background:radial-gradient(circle at 75% 5%,#d1efdc,transparent 35%),var(--bg); font:15px/1.5 "Manrope",sans-serif; } button { font:inherit; }
+    .page { max-width:1000px; margin:auto; padding:45px 25px 140px; } .top { display:flex; align-items:center; justify-content:space-between; } .logo { color:var(--ink); font-weight:800; letter-spacing:-.06em; } .logo span { color:var(--green); } .top a { color:var(--muted); text-decoration:none; } .hero { padding-top:18vh; } .hero small { color:var(--green); font-weight:800; letter-spacing:.15em; text-transform:uppercase; } h1 { max-width:700px; margin:15px 0; font-size:clamp(48px,8vw,100px); line-height:.95; letter-spacing:-.1em; } .hero p { max-width:510px; color:var(--muted); font-size:18px; } .quote { max-width:560px; margin-top:90px; padding:24px; border-left:3px solid var(--green); color:var(--muted); background:#ffffff80; }
+    .fab-wrap { position:fixed; right:28px; bottom:28px; z-index:4; display:grid; justify-items:end; gap:11px; } .actions { display:grid; gap:10px; justify-items:end; visibility:hidden; opacity:0; transform:translateY(15px) scale(.95); transition:.2s; } .fab-wrap.open .actions { visibility:visible; opacity:1; transform:none; } .action { display:flex; align-items:center; gap:10px; border:0; color:var(--ink); background:transparent; cursor:pointer; } .action span { padding:8px 12px; border-radius:8px; background:var(--surface); box-shadow:0 4px 16px #22352b22; font-size:13px; font-weight:700; } .action i { display:grid; place-items:center; width:40px; height:40px; border:1px solid var(--line); border-radius:50%; color:var(--green); background:var(--surface); box-shadow:0 4px 16px #22352b22; font-style:normal; } .action:hover i { color:#fff; background:var(--green); }
+    .fab { display:grid; place-items:center; width:62px; height:62px; border:0; border-radius:50%; color:#fff; background:var(--green); box-shadow:0 10px 30px #2f9b7066; font-size:30px; cursor:pointer; transition:.25s; } .open .fab { transform:rotate(45deg); } .toast { position:fixed; right:28px; bottom:105px; padding:12px 15px; border:1px solid #b9ddc7; border-radius:9px; color:var(--ink); background:#eaffef; opacity:0; transform:translateY(7px); transition:.2s; } .toast.show { opacity:1; transform:none; }
+    @media(max-width:500px) { .fab-wrap { right:18px; bottom:18px; } .toast { right:18px; bottom:93px; } }
+  </style>
+</head>
+<body>
+  <main class="page"><div class="top"><div class="logo">tiny<span>actions</span></div><a href="#about">About the pattern ↗</a></div><section class="hero"><small>Floating action button</small><h1>Keep the important action close.</h1><p>A compact action menu that stays out of the way until the moment your user needs it.</p><div class="quote">The best floating actions are helpful, not noisy. Give them one clear job, then let secondary actions orbit around it.</div></section></main>
+  <div class="toast" id="toast" role="status"></div>
+  <div class="fab-wrap" id="fabWrap">
+    <div class="actions" aria-label="Quick actions"><button class="action" type="button" data-message="New note started"><span>New note</span><i>✎</i></button><button class="action" type="button" data-message="Reminder scheduled"><span>Set reminder</span><i>◷</i></button><button class="action" type="button" data-message="Invite dialog opened"><span>Invite someone</span><i>♧</i></button></div>
+    <button class="fab" id="fab" type="button" aria-label="Open quick actions" aria-expanded="false">+</button>
+  </div>
+  <script>
+    const wrap = document.querySelector("#fabWrap"), fab = document.querySelector("#fab"), toast = document.querySelector("#toast");
+    fab.addEventListener("click", () => { const open = wrap.classList.toggle("open"); fab.setAttribute("aria-expanded", open); fab.setAttribute("aria-label", open ? "Close quick actions" : "Open quick actions"); if (open) wrap.querySelector(".action").focus(); });
+    wrap.querySelectorAll(".action").forEach(action => action.addEventListener("click", () => { toast.textContent = action.dataset.message; toast.classList.add("show"); wrap.classList.remove("open"); fab.setAttribute("aria-expanded", "false"); setTimeout(() => toast.classList.remove("show"), 2200); }));
+    document.addEventListener("keydown", e => { if (e.key === "Escape") { wrap.classList.remove("open"); fab.setAttribute("aria-expanded", "false"); fab.focus(); } });
+  </script>
+</body>
+</html>

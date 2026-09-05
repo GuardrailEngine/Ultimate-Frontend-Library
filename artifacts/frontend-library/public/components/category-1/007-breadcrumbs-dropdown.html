@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breadcrumbs Dropdown</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#f6f7fb; --surface:#fff; --line:#e2e6ee; --text:#1b2432; --muted:#7b8799; --blue:#356ae6; --shadow:0 18px 45px #1b294b16; }
+    * { box-sizing:border-box; } body { margin:0; min-height:100vh; color:var(--text); background:var(--bg); font:15px/1.5 "DM Sans",sans-serif; } button { font:inherit; }
+    .header { display:flex; align-items:center; height:72px; padding:0 max(22px,calc((100% - 1080px)/2)); border-bottom:1px solid var(--line); background:var(--surface); } .logo { display:flex; align-items:center; gap:9px; color:var(--text); font-weight:700; text-decoration:none; } .logo b { display:grid; place-items:center; width:27px; height:27px; border-radius:8px; color:#fff; background:var(--blue); }
+    .main { max-width:1080px; margin:auto; padding:36px 22px; } .breadcrumbs { display:flex; align-items:center; flex-wrap:wrap; gap:7px; color:var(--muted); } .crumb { position:relative; } .crumb > button, .crumb > a { display:flex; align-items:center; gap:6px; padding:6px 8px; border:0; border-radius:7px; color:var(--muted); background:transparent; text-decoration:none; cursor:pointer; } .crumb > button:hover, .crumb > a:hover, .crumb.open > button { color:var(--text); background:#e9edf5; } .chevron { font-size:11px; transition:.2s; } .open .chevron { transform:rotate(180deg); } .separator { color:#bcc4d0; } .current { color:var(--text); font-weight:600; }
+    .dropdown { position:absolute; z-index:3; top:calc(100% + 5px); left:0; min-width:210px; padding:6px; border:1px solid var(--line); border-radius:10px; background:var(--surface); box-shadow:var(--shadow); opacity:0; visibility:hidden; transform:translateY(-5px); transition:.18s; } .open .dropdown { opacity:1; visibility:visible; transform:none; } .dropdown button { display:block; width:100%; padding:9px 10px; border:0; border-radius:6px; color:var(--text); background:transparent; text-align:left; cursor:pointer; } .dropdown button:hover { background:#eef2fb; color:var(--blue); } .dropdown small { display:block; padding:7px 10px 4px; color:var(--muted); font-size:11px; }
+    .card { margin-top:45px; padding:clamp(25px,5vw,55px); border:1px solid var(--line); border-radius:18px; background:var(--surface); box-shadow:var(--shadow); } .card .label { color:var(--blue); font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; } h1 { margin:13px 0 12px; font-size:clamp(34px,6vw,64px); line-height:1; letter-spacing:-.07em; } .card p { max-width:620px; color:var(--muted); font-size:17px; } .route { display:inline-flex; align-items:center; gap:8px; margin-top:24px; padding:10px 14px; border-radius:8px; color:#fff; background:var(--blue); font-weight:600; }
+    @media(max-width:540px) { .breadcrumbs { align-items:flex-start; } .crumb:nth-of-type(2) .dropdown { right:0; left:auto; } }
+  </style>
+</head>
+<body>
+  <header class="header"><a class="logo" href="#"><b>⌁</b> atlas workspace</a></header>
+  <main class="main">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <div class="crumb"><a href="#home">Home</a></div><span class="separator">/</span>
+      <div class="crumb" id="workspaceCrumb"><button type="button" aria-expanded="false">Workspace <span class="chevron">⌄</span></button><div class="dropdown"><small>Switch workspace</small><button type="button">Northstar team</button><button type="button">Personal space</button><button type="button">Archive</button></div></div><span class="separator">/</span>
+      <div class="crumb" id="folderCrumb"><button type="button" aria-expanded="false">Projects <span class="chevron">⌄</span></button><div class="dropdown"><small>Folders in workspace</small><button type="button">Projects</button><button type="button">Research</button><button type="button">Shared with me</button></div></div><span class="separator">/</span>
+      <span class="current" id="currentCrumb">Website refresh</span>
+    </nav>
+    <section class="card"><span class="label">Current location</span><h1 id="title">Website refresh</h1><p id="description">A focused space for the new marketing site: content, direction, and all the small decisions that turn a first draft into something people remember.</p><span class="route">Open project →</span></section>
+  </main>
+  <script>
+    const crumbs = document.querySelectorAll(".crumb"), title = document.querySelector("#title"), current = document.querySelector("#currentCrumb");
+    crumbs.forEach(crumb => { const button = crumb.querySelector("button"); if (!button) return; button.addEventListener("click", e => { e.stopPropagation(); const open = crumb.classList.toggle("open"); button.setAttribute("aria-expanded", open); crumbs.forEach(other => { if (other !== crumb) { other.classList.remove("open"); other.querySelector("button")?.setAttribute("aria-expanded", "false"); } }); }); crumb.querySelectorAll(".dropdown button").forEach(option => option.addEventListener("click", () => { const value = option.textContent; button.childNodes[0].textContent = `${value} `; crumb.classList.remove("open"); button.setAttribute("aria-expanded", "false"); if (crumb.id === "folderCrumb") { title.textContent = value; current.textContent = value; } })); });
+    document.addEventListener("click", () => crumbs.forEach(crumb => { crumb.classList.remove("open"); crumb.querySelector("button")?.setAttribute("aria-expanded", "false"); })); document.addEventListener("keydown", e => { if (e.key === "Escape") document.querySelectorAll(".crumb.open").forEach(c => c.classList.remove("open")); });
+  </script>
+</body>
+</html>

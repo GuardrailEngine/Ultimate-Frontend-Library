@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centered Modal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#eef2f7; --surface:#fff; --ink:#1b2532; --muted:#8390a0; --line:#dfe5ec; --blue:#437de0; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--ink); background:radial-gradient(circle at 50% 0,#d7e6ff,transparent 40%),var(--bg); font:15px/1.5 "DM Sans",sans-serif; } .page { text-align:center; } .eyebrow { color:var(--blue); font-weight:700; letter-spacing:.13em; text-transform:uppercase; } h1 { margin:12px 0 9px; font-size:clamp(42px,7vw,75px); line-height:.95; letter-spacing:-.1em; } .page p { margin:0 auto 35px; color:var(--muted); font-size:17px; } .open { padding:12px 18px; border:0; border-radius:8px; color:#fff; background:var(--blue); cursor:pointer; font-weight:700; }
+    .backdrop { position:fixed; z-index:4; inset:0; display:grid; place-items:center; padding:20px; background:#182538a8; opacity:0; visibility:hidden; transition:.2s; } .backdrop.open { opacity:1; visibility:visible; } .modal { width:min(470px,100%); padding:30px; border:1px solid var(--line); border-radius:17px; background:var(--surface); box-shadow:0 25px 80px #13243d38; transform:translateY(12px) scale(.97); transition:.25s; } .open .modal { transform:none; } .modal-head { display:flex; align-items:start; justify-content:space-between; } .modal h2 { margin:0; font-size:25px; letter-spacing:-.06em; } .close { border:0; color:var(--muted); background:transparent; font-size:24px; cursor:pointer; } .modal p { margin:12px 0 22px; color:var(--muted); } .field { margin-bottom:20px; text-align:left; } label { display:block; margin-bottom:7px; color:#556274; font-size:13px; font-weight:700; } input { width:100%; padding:12px; border:1px solid var(--line); border-radius:8px; outline:0; } input:focus { border-color:var(--blue); } .actions { display:flex; justify-content:flex-end; gap:9px; } .actions button { padding:10px 14px; border-radius:8px; cursor:pointer; font-weight:700; } .cancel { border:1px solid var(--line); color:var(--ink); background:#fff; } .save { border:1px solid var(--blue); color:#fff; background:var(--blue); }
+  </style>
+</head>
+<body>
+  <main class="page"><span class="eyebrow">A focused interruption</span><h1>Ask one clear question.</h1><p>A centered modal keeps a short decision in the center of the user's attention.</p><button class="open" id="open" type="button">Open modal</button></main>
+  <div class="backdrop" id="backdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="title"><div class="modal-head"><h2 id="title">Save this view</h2><button class="close" id="close" type="button" aria-label="Close modal">×</button></div><p>Give this filter a name so the whole team can find it again.</p><div class="field"><label for="name">View name</label><input id="name" placeholder="e.g. High priority work"></div><div class="actions"><button class="cancel" id="cancel" type="button">Not now</button><button class="save" id="save" type="button">Save view</button></div></section></div>
+  <script>
+    const backdrop=document.querySelector("#backdrop"), open=document.querySelector("#open"), nameInput=document.querySelector("#name"); function show(value){ backdrop.classList.toggle("open",value); document.body.style.overflow=value?"hidden":""; if(value) nameInput.focus(); else open.focus(); } open.addEventListener("click",()=>show(true)); document.querySelector("#close").addEventListener("click",()=>show(false)); document.querySelector("#cancel").addEventListener("click",()=>show(false)); document.querySelector("#save").addEventListener("click",()=>{ if(nameInput.value.trim()){ open.textContent="View saved ✓"; show(false); } else nameInput.focus(); }); backdrop.addEventListener("click",e=>{ if(e.target===backdrop) show(false); }); document.addEventListener("keydown",e=>{ if(e.key==="Escape" && backdrop.classList.contains("open")) show(false); });
+  </script>
+</body>
+</html>

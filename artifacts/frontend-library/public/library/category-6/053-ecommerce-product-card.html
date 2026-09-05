@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ecommerce Product Card</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#f6f4ef; --surface:#fff; --ink:#1c2420; --muted:#78827b; --line:#e2e1d9; --orange:#c9673f; --cream:#f2ddc9; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--ink); background:radial-gradient(circle at 10% 10%,#f9dbb9,transparent 40%),var(--bg); font:14px/1.5 "Manrope",sans-serif; } .product { position:relative; width:min(370px,calc(100% - 36px)); overflow:hidden; border:1px solid var(--line); border-radius:18px; background:var(--surface); box-shadow:0 20px 55px #57453417; } .media { position:relative; display:grid; place-items:center; height:320px; background:var(--cream); } .media:before { content:""; width:170px; height:235px; border-radius:48% 48% 45% 45%; background:linear-gradient(90deg,#fff0,#9b4e2828 45%,#fff5),#b86c43; box-shadow:30px 20px 0 #7d422e22; transform:rotate(8deg); } .media:after { content:"new"; position:absolute; top:18px; left:18px; padding:5px 8px; border-radius:5px; color:#fff; background:var(--orange); font-size:10px; font-weight:700; text-transform:uppercase; } .heart { position:absolute; z-index:1; top:15px; right:15px; display:grid; place-items:center; width:34px; height:34px; border:0; border-radius:50%; color:var(--orange); background:#fff; cursor:pointer; font-size:18px; } .heart.liked { color:#fff; background:var(--orange); } .info { padding:22px; } .category { color:var(--muted); font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; } h1 { margin:7px 0; font-size:22px; letter-spacing:-.06em; } .description { margin:0 0 18px; color:var(--muted); } .bottom { display:flex; align-items:center; justify-content:space-between; } .price { font-size:21px; font-weight:800; } .cart { padding:10px 13px; border:0; border-radius:8px; color:#fff; background:var(--ink); cursor:pointer; font-weight:700; } .cart:disabled { background:var(--orange); }
+  </style>
+</head>
+<body>
+  <article class="product"><div class="media"><button class="heart" id="heart" type="button" aria-label="Add to wishlist">♡</button></div><div class="info"><span class="category">Home objects</span><h1>Solace table lamp</h1><p class="description">Warm light, honest materials, and a shape that belongs in the quiet corner.</p><div class="bottom"><span class="price">$148</span><button class="cart" id="cart" type="button">Add to cart</button></div></div></article>
+  <script>
+    document.querySelector("#heart").addEventListener("click", e => { e.currentTarget.classList.toggle("liked"); e.currentTarget.textContent = e.currentTarget.classList.contains("liked") ? "♥" : "♡"; e.currentTarget.setAttribute("aria-label", e.currentTarget.classList.contains("liked") ? "Remove from wishlist" : "Add to wishlist"); }); document.querySelector("#cart").addEventListener("click", e => { e.currentTarget.textContent = "Added ✓"; e.currentTarget.disabled = true; });
+  </script>
+</body>
+</html>

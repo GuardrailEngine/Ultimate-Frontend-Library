@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Placeholder Shimmer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#f5f7f8; --surface:#fff; --line:#dfe6e9; --sk:#edf1f3; --ink:#1b272d; --muted:#839199; --teal:#2d9a88; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--ink); background:linear-gradient(145deg,#f5f7f8,#e4f1ee); font:14px/1.5 "Manrope",sans-serif; } .card { width:min(620px,calc(100% - 36px)); padding:24px; border:1px solid var(--line); border-radius:17px; background:var(--surface); box-shadow:0 20px 55px #30514b12; } .top { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; } h1 { margin:0; font-size:20px; letter-spacing:-.05em; } .toggle { padding:8px 10px; border:1px solid var(--line); border-radius:7px; color:var(--teal); background:transparent; cursor:pointer; font-size:12px; font-weight:700; } .loading .content { display:grid; gap:16px; } .skeleton { position:relative; overflow:hidden; border-radius:8px; background:var(--sk); } .skeleton:after { content:""; position:absolute; inset:0; background:linear-gradient(100deg,transparent 15%,#fff9 47%,transparent 75%); transform:translateX(-100%); animation:shine 1.35s infinite; } @keyframes shine { to { transform:translateX(100%); } } .photo { height:180px; } .row { display:grid; grid-template-columns:55px 1fr; gap:13px; align-items:center; } .avatar { width:55px; height:55px; border-radius:50%; } .lines { display:grid; gap:8px; } .line { height:11px; } .short { width:45%; } .real { display:none; } .loaded .loading { display:none; } .loaded .real { display:block; animation:appear .3s; } @keyframes appear { from { opacity:0; } to { opacity:1; } } .real .photo { height:180px; border-radius:9px; background:linear-gradient(135deg,#5b9ba1,#d0ae78); } .real h2 { margin:15px 0 5px; font-size:20px; } .real p { margin:0; color:var(--muted); }
+  </style>
+</head>
+<body>
+  <main class="card" id="card"><div class="top"><h1>Loading a recommendation</h1><button class="toggle" id="toggle" type="button">Show example</button></div><div class="loading"><div class="skeleton photo"></div><div class="row"><div class="skeleton avatar"></div><div class="lines"><div class="skeleton line"></div><div class="skeleton line short"></div></div></div><div class="lines"><div class="skeleton line"></div><div class="skeleton line"></div></div></div><div class="real"><div class="photo"></div><h2>A slower kind of morning</h2><p>A short field note on the rituals that help creative work begin.</p></div></main>
+  <script>
+    const card=document.querySelector("#card"),toggle=document.querySelector("#toggle"); toggle.addEventListener("click",()=>{card.classList.toggle("loaded");toggle.textContent=card.classList.contains("loaded")?"Show loading":"Show example";});
+  </script>
+</body>
+</html>

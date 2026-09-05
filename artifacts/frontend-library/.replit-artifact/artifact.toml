@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "The 2026 Ultimate Frontend Library"
+description = "A polished live catalog of 100 standalone frontend components, organized by category with searchable previews and copyable source code."
+version = "1.0.0"
+id = "artifacts/frontend-library"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18106
+
+[services.development]
+run = "pnpm --filter @workspace/frontend-library run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/frontend-library", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/frontend-library/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18106"
+BASE_PATH = "/"

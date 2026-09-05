@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bouncing Dots</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#f4f6fb; --surface:#fff; --ink:#1d2735; --muted:#8792a1; --line:#e0e6ef; --blue:#4c7fe0; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--ink); background:linear-gradient(145deg,#f4f6fb,#e8edff); font:14px/1.5 "DM Sans",sans-serif; } .chat { width:min(470px,calc(100% - 36px)); padding:22px; border:1px solid var(--line); border-radius:17px; background:var(--surface); box-shadow:0 18px 50px #35456d12; } .head { display:flex; align-items:center; gap:11px; padding-bottom:17px; border-bottom:1px solid var(--line); } .avatar { display:grid; place-items:center; width:39px; height:39px; border-radius:50%; color:#fff; background:linear-gradient(135deg,#5d9fe3,#8d65cc); font-size:11px; font-weight:700; } .head strong { display:block; } .head small { color:var(--muted); } .message { display:flex; align-items:end; gap:8px; margin-top:20px; } .bubble { max-width:260px; padding:12px 15px; border-radius:14px 14px 14px 3px; color:#586576; background:#eff3f9; } .typing { display:flex; align-items:center; gap:4px; height:36px; padding:0 13px; border-radius:14px 14px 14px 3px; background:#eff3f9; } .typing i { width:6px; height:6px; border-radius:50%; background:var(--blue); animation:bounce .7s infinite alternate; } .typing i:nth-child(2) { animation-delay:.15s; } .typing i:nth-child(3) { animation-delay:.3s; } @keyframes bounce { to { transform:translateY(-5px); opacity:.45; } } .reply { display:flex; gap:7px; margin-top:25px; } .reply input { min-width:0; flex:1; padding:10px; border:1px solid var(--line); border-radius:8px; outline:0; } .reply button { padding:10px 13px; border:0; border-radius:8px; color:#fff; background:var(--blue); cursor:pointer; }
+  </style>
+</head>
+<body>
+  <main class="chat"><div class="head"><div class="avatar">AM</div><div><strong>Alex Morgan</strong><small>Usually replies in a few minutes</small></div></div><div class="message"><div class="typing" id="typing" role="status" aria-label="Alex is typing"><i></i><i></i><i></i></div></div><form class="reply" id="form"><input id="input" placeholder="Write a message..." aria-label="Write a message"><button type="submit">Send</button></form></main>
+  <script>
+    const form=document.querySelector("#form"), input=document.querySelector("#input"), message=document.querySelector(".message"); form.addEventListener("submit",e=>{e.preventDefault();if(!input.value.trim())return;document.querySelector("#typing").remove();const bubble=document.createElement("div");bubble.className="bubble";bubble.textContent=input.value;message.append(bubble);input.value="";setTimeout(()=>{const typing=document.createElement("div");typing.className="typing";typing.id="typing";typing.innerHTML="<i></i><i></i><i></i>";message.append(typing)},900)});
+  </script>
+</body>
+</html>

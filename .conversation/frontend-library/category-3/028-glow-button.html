@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glow Button</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#060a0f; --text:#f0f6ff; --muted:#8495a9; --cyan:#5cf0d0; --blue:#498eff; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--text); background:radial-gradient(circle at 50% 50%,#102f3d,transparent 35%),var(--bg); font:15px/1.5 "Space Grotesk",sans-serif; } .stage { text-align:center; } .eyebrow { color:var(--cyan); font-weight:700; letter-spacing:.15em; text-transform:uppercase; } h1 { margin:14px 0 10px; font-size:clamp(43px,8vw,85px); line-height:.9; letter-spacing:-.1em; } p { margin:0 auto 54px; color:var(--muted); font-size:17px; }
+    .glow { position:relative; isolation:isolate; padding:16px 28px; border:1px solid #a8fff0; border-radius:8px; color:#06130f; background:var(--cyan); font:700 14px "Space Grotesk",sans-serif; cursor:pointer; transition:.25s; } .glow:before { content:""; position:absolute; z-index:-1; inset:-4px; border-radius:inherit; background:linear-gradient(90deg,var(--cyan),var(--blue),var(--cyan)); background-size:200%; filter:blur(12px); opacity:.75; animation:move 3s linear infinite; } .glow:hover { color:#fff; background:#0b2427; box-shadow:0 0 0 1px var(--cyan),0 0 35px #5cf0d077; } @keyframes move { to { background-position:200%; } } .result { min-height:22px; margin-top:22px; color:var(--cyan); font-size:13px; }
+  </style>
+</head>
+<body>
+  <main class="stage"><span class="eyebrow">Signal in the dark</span><h1>Give the action a halo.</h1><p>A soft ambient glow can make one primary button feel important without turning the entire interface into a spotlight.</p><button class="glow" id="glow" type="button">Enter the night mode</button><div class="result" id="result" role="status"></div></main>
+  <script>
+    const glow = document.querySelector("#glow"), result = document.querySelector("#result"); glow.addEventListener("click", () => { glow.textContent = "Night mode active ✓"; result.textContent = "The atmosphere has changed."; document.body.style.background = "radial-gradient(circle at 50% 50%,#40213c,transparent 35%),#060a0f"; });
+  </script>
+</body>
+</html>

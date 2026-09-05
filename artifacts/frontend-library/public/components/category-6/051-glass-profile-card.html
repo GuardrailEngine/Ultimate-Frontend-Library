@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glass Profile Card</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#090d17; --text:#f0f4ff; --muted:#a1aec3; --line:#ffffff2b; --pink:#f08aca; --blue:#7b9fff; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--text); background:radial-gradient(circle at 20% 20%,#3d245e,transparent 35%),radial-gradient(circle at 80% 80%,#133f50,transparent 35%),var(--bg); font:14px/1.5 "Manrope",sans-serif; } .card { position:relative; overflow:hidden; width:min(390px,calc(100% - 36px)); padding:28px; border:1px solid var(--line); border-radius:25px; background:#ffffff0d; box-shadow:0 25px 80px #0008,inset 0 1px #fff2; backdrop-filter:blur(22px); } .card:before { content:""; position:absolute; top:-100px; right:-90px; width:240px; height:240px; border-radius:50%; background:#f08aca4d; filter:blur(20px); } .top { position:relative; display:flex; justify-content:space-between; align-items:start; } .avatar { display:grid; place-items:center; width:75px; height:75px; border:1px solid #ffffff55; border-radius:50%; color:#fff; background:linear-gradient(145deg,#d99df0,#586ef0); font-size:26px; font-weight:800; box-shadow:0 8px 20px #0003; } .status { display:flex; align-items:center; gap:6px; padding:6px 9px; border:1px solid #ffffff24; border-radius:99px; color:#c8f9df; background:#73da9e14; font-size:11px; } .status i { width:6px; height:6px; border-radius:50%; background:#73da9e; } h1 { position:relative; margin:25px 0 3px; font-size:27px; letter-spacing:-.07em; } .role { color:var(--pink); font-size:13px; font-weight:700; } .bio { position:relative; margin:17px 0 25px; color:var(--muted); } .stats { display:flex; gap:25px; padding:17px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); } .stats strong { display:block; font-size:20px; } .stats span { color:var(--muted); font-size:11px; } .actions { position:relative; display:flex; gap:9px; margin-top:22px; } .actions button { flex:1; padding:11px; border-radius:9px; color:var(--text); background:transparent; border:1px solid var(--line); cursor:pointer; font-weight:700; } .actions button:first-child { color:#121322; border-color:var(--pink); background:var(--pink); }
+  </style>
+</head>
+<body>
+  <article class="card"><div class="top"><div class="avatar">SK</div><span class="status"><i></i> Available</span></div><h1>Samira Khan</h1><div class="role">Product designer · Casablanca</div><p class="bio">I turn complicated systems into calm, useful experiences. Currently making tools for teams that care about the details.</p><div class="stats"><div><strong>48</strong><span>Projects</span></div><div><strong>12k</strong><span>Followers</span></div><div><strong>4.9</strong><span>Rating</span></div></div><div class="actions"><button id="connect" type="button">Connect</button><button id="more" type="button">More</button></div></article>
+  <script>
+    document.querySelector("#connect").addEventListener("click", e => { e.currentTarget.textContent = "Connected ✓"; e.currentTarget.disabled = true; }); document.querySelector("#more").addEventListener("click", e => { e.currentTarget.textContent = "Profile copied"; navigator.clipboard?.writeText("Samira Khan — Product designer"); setTimeout(() => e.currentTarget.textContent = "More",1800); });
+  </script>
+</body>
+</html>

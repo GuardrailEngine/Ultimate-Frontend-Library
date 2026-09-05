@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radio Cards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#0b1119; --surface:#131c27; --line:#2c3c4e; --text:#eef4fb; --muted:#8c9aad; --cyan:#5dd5d0; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--text); background:radial-gradient(circle at 20% 10%,#163d42,transparent 37%),var(--bg); font:15px/1.5 "DM Sans",sans-serif; } button, input { font:inherit; }
+    .card { width:min(650px,calc(100% - 36px)); padding:clamp(28px,6vw,48px); border:1px solid var(--line); border-radius:23px; background:#131c27ed; box-shadow:0 25px 80px #0008; } .eyebrow { color:var(--cyan); font-weight:700; letter-spacing:.13em; text-transform:uppercase; } h1 { margin:10px 0 8px; font-size:34px; letter-spacing:-.07em; } .intro { margin:0 0 30px; color:var(--muted); } fieldset { margin:0; padding:0; border:0; } legend { margin-bottom:13px; font-weight:700; } .options { display:grid; grid-template-columns:repeat(3,1fr); gap:11px; } .option { position:relative; } .option input { position:absolute; opacity:0; } .option label { display:flex; flex-direction:column; gap:5px; height:100%; padding:17px 14px; border:1px solid var(--line); border-radius:12px; color:var(--text); background:#0e151e; cursor:pointer; transition:.2s; } .option label:hover { border-color:#5d777e; background:#16232a; } .option input:checked + label { border-color:var(--cyan); background:#5dd5d012; box-shadow:0 0 0 2px #5dd5d025; } .option input:focus-visible + label { outline:2px solid var(--cyan); outline-offset:2px; } .option label b { display:flex; justify-content:space-between; } .option label b:after { content:""; width:13px; height:13px; border:1px solid #617184; border-radius:50%; } .option input:checked + label b:after { border:4px solid var(--cyan); } .option small { color:var(--muted); } .submit { width:100%; margin-top:26px; padding:13px; border:0; border-radius:9px; color:#081517; background:var(--cyan); font-weight:700; cursor:pointer; } .submit:disabled { opacity:.4; cursor:not-allowed; } .selected { min-height:20px; margin-top:14px; color:var(--cyan); font-size:13px; }
+    @media(max-width:550px) { .options { grid-template-columns:1fr; } .option label { flex-direction:row; align-items:center; justify-content:space-between; } .option small { margin-right:auto; margin-left:9px; } }
+  </style>
+</head>
+<body>
+  <main class="card"><span class="eyebrow">Personalize your plan</span><h1>How do you like to work?</h1><p class="intro">Choose the rhythm that feels most like your team. You can change this later.</p><form id="form"><fieldset><legend>Working style</legend><div class="options"><div class="option"><input id="focus" name="style" value="Focus blocks" type="radio"><label for="focus"><b>Focus blocks</b><small>Deep work first</small></label></div><div class="option"><input id="flow" name="style" value="Flexible flow" type="radio"><label for="flow"><b>Flexible flow</b><small>Adapt as you go</small></label></div><div class="option"><input id="team" name="style" value="Team rhythm" type="radio"><label for="team"><b>Team rhythm</b><small>Move together</small></label></div></div></fieldset><button class="submit" id="submit" type="submit" disabled>Save preference</button><div class="selected" id="selected" role="status"></div></form></main>
+  <script>
+    const radios = [...document.querySelectorAll('input[name="style"]')], submit = document.querySelector("#submit"), selected = document.querySelector("#selected"); radios.forEach(radio => radio.addEventListener("change", () => { submit.disabled = false; selected.textContent = `Selected: ${radio.value}`; })); document.querySelector("#form").addEventListener("submit", e => { e.preventDefault(); submit.textContent = "Preference saved ✓"; submit.disabled = true; });
+  </script>
+</body>
+</html>

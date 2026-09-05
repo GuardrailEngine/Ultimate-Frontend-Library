@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shimmer Text</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#080a10; --text:#f1f3f7; --muted:#8b95a8; --line:#273145; --cyan:#6de2d4; --purple:#a782ff; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--text); background:radial-gradient(circle at 50% 15%,#2e2557,transparent 38%),var(--bg); font:15px/1.5 "Space Grotesk",sans-serif; } .stage { text-align:center; } .eyebrow { color:var(--cyan); font-weight:700; letter-spacing:.14em; text-transform:uppercase; } h1 { max-width:800px; margin:14px auto 11px; font-size:clamp(46px,8vw,95px); line-height:.92; letter-spacing:-.11em; } h1 span { background:linear-gradient(110deg,var(--cyan) 20%,#fff 45%,var(--purple) 70%); background-size:230% auto; color:transparent; -webkit-background-clip:text; background-clip:text; animation:shimmer 3s linear infinite; } @keyframes shimmer { to { background-position:230% center; } } .stage p { margin:0 auto; color:var(--muted); font-size:17px; } .replay { margin-top:32px; padding:10px 14px; border:1px solid var(--line); border-radius:8px; color:var(--muted); background:transparent; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <main class="stage"><span class="eyebrow">A little motion in the type</span><h1>Let the idea <span>catch the light.</span></h1><p>Shimmer is most useful when it gives a quiet phrase a little atmosphere.</p><button class="replay" id="replay" type="button">Replay shimmer</button></main>
+  <script>
+    const span=document.querySelector("h1 span"); document.querySelector("#replay").addEventListener("click",()=>{span.style.animation="none";void span.offsetWidth;span.style.animation="";});
+  </script>
+</body>
+</html>

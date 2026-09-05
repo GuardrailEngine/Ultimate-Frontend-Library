@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conic Donut Chart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#f6f7fb; --surface:#fff; --ink:#1c2432; --muted:#8490a2; --line:#e5e9f0; --blue:#5b7bea; --purple:#956be8; --pink:#e66aa7; --yellow:#edbd59; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--ink); background:linear-gradient(145deg,#f6f7fb,#ece8fb); font:14px/1.5 "DM Sans",sans-serif; } .card { width:min(670px,calc(100% - 36px)); padding:35px; border:1px solid var(--line); border-radius:20px; background:var(--surface); box-shadow:0 20px 60px #3e416d12; } .eyebrow { color:var(--blue); font-weight:700; letter-spacing:.13em; text-transform:uppercase; } h1 { margin:9px 0 4px; font-size:30px; letter-spacing:-.07em; } .sub { margin:0; color:var(--muted); } .body { display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:35px; margin-top:32px; }
+    .donut { position:relative; display:grid; place-items:center; width:min(280px,100%); aspect-ratio:1; margin:auto; border-radius:50%; background:conic-gradient(var(--blue) 0 40%,var(--purple) 40% 67%,var(--pink) 67% 85%,var(--yellow) 85% 100%); transform:rotate(-90deg); } .donut:after { content:""; position:absolute; inset:22%; border-radius:50%; background:var(--surface); } .donut-center { position:absolute; z-index:1; transform:rotate(90deg); text-align:center; } .donut-center strong { display:block; font-size:34px; letter-spacing:-.07em; } .donut-center span { color:var(--muted); font-size:12px; } .legend { display:grid; gap:15px; } .legend-row { display:grid; grid-template-columns:12px 1fr auto; align-items:center; gap:9px; } .legend-row i { width:10px; height:10px; border-radius:50%; } .legend-row small { color:var(--muted); } .legend-row b { font-size:13px; }
+    @media(max-width:580px) { .body { grid-template-columns:1fr; } .donut { width:230px; } }
+  </style>
+</head>
+<body>
+  <main class="card"><span class="eyebrow">Revenue mix</span><h1>Where your growth comes from</h1><p class="sub">A clear view of this quarter's contribution by channel</p><div class="body"><div class="donut" aria-label="Donut chart showing revenue by channel"><div class="donut-center"><strong>$84.2k</strong><span>Total revenue</span></div></div><div class="legend"><div class="legend-row"><i style="background:var(--blue)"></i><span>Direct</span><b>40%</b></div><div class="legend-row"><i style="background:var(--purple)"></i><span>Partner</span><b>27%</b></div><div class="legend-row"><i style="background:var(--pink)"></i><span>Organic</span><b>18%</b></div><div class="legend-row"><i style="background:var(--yellow)"></i><span>Other</span><b>15%</b></div></div></div></main>
+</body>
+</html>

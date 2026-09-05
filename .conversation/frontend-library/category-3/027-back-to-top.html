@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Back To Top</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#f5f1eb; --ink:#1b2822; --muted:#7b867f; --line:#dad6cd; --orange:#df704a; }
+    * { box-sizing:border-box; } html { scroll-behavior:smooth; } body { margin:0; color:var(--ink); background:var(--bg); font:15px/1.7 "Manrope",sans-serif; } header { display:flex; align-items:center; justify-content:space-between; width:min(1040px,100%); height:86px; margin:auto; padding:0 24px; } .logo { font-weight:800; letter-spacing:-.07em; } .logo span { color:var(--orange); } header a { color:var(--muted); text-decoration:none; } .hero, .section { display:grid; align-items:center; width:min(1040px,100%); min-height:100vh; margin:auto; padding:70px 24px; border-bottom:1px solid var(--line); } .hero { min-height:calc(100vh - 86px); } .hero h1 { max-width:700px; margin:0; font-size:clamp(55px,9vw,110px); line-height:.9; letter-spacing:-.12em; } .eyebrow { color:var(--orange); font-weight:800; letter-spacing:.14em; text-transform:uppercase; } .section h2 { max-width:600px; margin:15px 0; font-size:clamp(42px,7vw,80px); line-height:.95; letter-spacing:-.1em; } .section p { max-width:570px; color:var(--muted); font-size:18px; }
+    .to-top { position:fixed; right:25px; bottom:25px; display:grid; place-items:center; width:58px; height:58px; border:1px solid var(--orange); border-radius:50%; color:var(--orange); background:#f5f1ebee; cursor:pointer; opacity:0; visibility:hidden; transform:translateY(12px); transition:.25s; } .to-top.visible { opacity:1; visibility:visible; transform:none; } .to-top svg { width:21px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; } .to-top:hover { color:#fff; background:var(--orange); }
+  </style>
+</head>
+<body>
+  <header><div class="logo">up<span>/</span>ward</div><a href="#ideas">Read the essay ↘</a></header><main id="top"><section class="hero"><div><span class="eyebrow">A long-form page</span><h1>The way back matters too.</h1></div></section><section class="section" id="ideas"><div><span class="eyebrow">01 / Intentional motion</span><h2>Make the long page feel short.</h2><p>When people have reached the end of a thoughtful piece, give them a clear, gentle path back to the beginning.</p></div></section><section class="section"><div><span class="eyebrow">02 / Useful closure</span><h2>Endings should open a door.</h2><p>A back-to-top control is a small courtesy that keeps exploration feeling effortless.</p></div></section></main><button class="to-top" id="toTop" type="button" aria-label="Back to top"><svg viewBox="0 0 24 24"><path d="M5 11 12 4l7 7M12 5v15"/></svg></button>
+  <script>
+    const toTop = document.querySelector("#toTop"); addEventListener("scroll", () => toTop.classList.toggle("visible", scrollY > innerHeight * .65), { passive:true }); toTop.addEventListener("click", () => scrollTo({ top:0, behavior:"smooth" }));
+  </script>
+</body>
+</html>

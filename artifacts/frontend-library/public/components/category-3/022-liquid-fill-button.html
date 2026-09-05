@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liquid Fill Button</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#f5efe7; --ink:#17251f; --muted:#748078; --orange:#eb6e40; --line:#decfc0; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--ink); background:radial-gradient(circle at 75% 20%,#fbd4a2,transparent 35%),var(--bg); font:15px/1.5 "Manrope",sans-serif; } .stage { text-align:center; } .eyebrow { color:var(--orange); font-weight:800; letter-spacing:.14em; text-transform:uppercase; } h1 { margin:14px 0 10px; font-size:clamp(43px,7vw,82px); line-height:.95; letter-spacing:-.1em; } p { max-width:500px; margin:0 auto 55px; color:var(--muted); font-size:17px; }
+    .liquid { position:relative; isolation:isolate; overflow:hidden; padding:17px 31px; border:2px solid var(--orange); border-radius:99px; color:var(--orange); background:transparent; font:700 15px "Manrope",sans-serif; cursor:pointer; transition:color .4s; } .liquid span { position:relative; z-index:2; } .liquid:before, .liquid:after { content:""; position:absolute; z-index:1; left:50%; width:220%; aspect-ratio:1; border-radius:42%; background:var(--orange); transform:translateX(-50%); transition:top .55s ease; } .liquid:before { top:110%; } .liquid:after { top:105%; opacity:.55; transform:translateX(-55%) rotate(15deg); transition-delay:.05s; } .liquid:hover, .liquid.filled { color:#fff; } .liquid:hover:before, .liquid.filled:before { top:-85%; } .liquid:hover:after, .liquid.filled:after { top:-80%; }
+    .result { min-height:23px; margin-top:25px; color:var(--orange); font-size:13px; }
+  </style>
+</head>
+<body>
+  <main class="stage"><span class="eyebrow">Fluid interaction</span><h1>Let the action flow.</h1><p>A rising liquid layer gives a quiet, tactile sense of completion without adding visual noise.</p><button class="liquid" id="liquid" type="button"><span>Start a new project</span></button><div class="result" id="result" role="status"></div></main>
+  <script>
+    const liquid = document.querySelector("#liquid"), result = document.querySelector("#result"); liquid.addEventListener("click", () => { liquid.classList.add("filled"); liquid.querySelector("span").textContent = "Project started"; result.textContent = "Your new project is ready for its first idea."; });
+  </script>
+</body>
+</html>

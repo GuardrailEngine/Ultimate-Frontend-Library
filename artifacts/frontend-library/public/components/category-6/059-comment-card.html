@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comment Card</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#f4f6f9; --surface:#fff; --ink:#202a36; --muted:#84909e; --line:#e1e6ed; --blue:#4a7fe1; --orange:#e58f4c; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--ink); background:linear-gradient(145deg,#f4f6f9,#e8effd); font:14px/1.5 "DM Sans",sans-serif; } .card { width:min(560px,calc(100% - 36px)); padding:22px; border:1px solid var(--line); border-radius:15px; background:var(--surface); box-shadow:0 17px 45px #30456d12; } .comment { display:grid; grid-template-columns:42px 1fr; gap:13px; } .avatar { display:grid; place-items:center; width:42px; height:42px; border-radius:50%; color:#fff; background:linear-gradient(135deg,#6b91e8,#8e61ca); font-size:12px; font-weight:700; } .head { display:flex; align-items:baseline; justify-content:space-between; gap:12px; } .head strong { font-size:14px; } time { color:var(--muted); font-size:12px; } .body { margin:8px 0 14px; color:#4d5865; } .tags { display:flex; flex-wrap:wrap; gap:6px; } .tag { padding:3px 7px; border-radius:5px; color:var(--blue); background:#edf3ff; font-size:11px; font-weight:700; } .actions { display:flex; align-items:center; gap:16px; margin-top:16px; } .action { border:0; color:var(--muted); background:transparent; cursor:pointer; font-size:12px; } .action:hover, .action.liked { color:var(--orange); } .reply { display:none; grid-template-columns:1fr auto; gap:7px; margin:16px 0 0 55px; } .reply.open { display:grid; } .reply input { min-width:0; padding:9px; border:1px solid var(--line); border-radius:7px; outline:0; } .reply button { padding:8px 11px; border:0; border-radius:7px; color:#fff; background:var(--blue); cursor:pointer; }
+  </style>
+</head>
+<body>
+  <article class="card"><div class="comment"><div class="avatar">MC</div><div><div class="head"><strong>Mina Chen</strong><time>2 hours ago</time></div><div class="body">This is the first version that makes the handoff feel genuinely calm. I especially like how the empty state gives people a useful place to begin.</div><div class="tags"><span class="tag">Product</span><span class="tag">Thoughtful</span></div><div class="actions"><button class="action like" type="button">♡ <span>12</span></button><button class="action reply-toggle" type="button">Reply</button><button class="action" type="button">•••</button></div></div></div><form class="reply" id="reply"><input placeholder="Write a reply..." aria-label="Write a reply"><button type="submit">Send</button></form></article>
+  <script>
+    const like=document.querySelector(".like"); like.addEventListener("click",()=>{ const liked=like.classList.toggle("liked"), count=like.querySelector("span"); count.textContent=Number(count.textContent)+(liked?1:-1); like.firstChild.textContent=liked?"♥ ":"♡ "; }); const reply=document.querySelector("#reply"); document.querySelector(".reply-toggle").addEventListener("click",()=>{ reply.classList.toggle("open"); if(reply.classList.contains("open")) reply.querySelector("input").focus(); }); reply.addEventListener("submit",e=>{ e.preventDefault(); const input=reply.querySelector("input"); if(input.value.trim()){ document.querySelector(".reply-toggle").textContent="Reply sent ✓"; input.value=""; reply.classList.remove("open"); } });
+  </script>
+</body>
+</html>

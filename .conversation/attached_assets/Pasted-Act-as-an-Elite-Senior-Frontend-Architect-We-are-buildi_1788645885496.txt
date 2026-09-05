@@ -1,0 +1,31 @@
+Act as an Elite Senior Frontend Architect. We are building the source code for a $149-value digital product called "The 2026 Ultimate Frontend Library".
+
+CRITICAL PROBLEM TO AVOID: 
+A previous AI agent failed because it generated placeholder files (e.g., "Toggle navigation" or "Run interaction") instead of the real UI. You MUST NOT do this. Every single file must contain the ACTUAL, DISTINCT, and FUNCTIONAL UI code for its specific name. Do not use generic templates.
+
+TECHNICAL RULES (Mandatory for all files):
+1. Pure HTML, CSS, and Vanilla JavaScript. ABSOLUTELY NO frameworks (React/Vue), NO build steps, NO external libraries (except Google Fonts).
+2. Every component must be a COMPLETE, standalone HTML document (from `<!DOCTYPE html>` to `</html>`) that works immediately in a browser.
+3. Modern Dark Mode aesthetic. Use shared CSS variables in `:root` for theming.
+4. Fully responsive, accessible (ARIA where appropriate), and bug-free.
+5. Write real, functional code. For example, if it's a "Kanban Board", write the HTML5 Drag and Drop API logic. If it's an "SVG Line Chart", write the actual SVG paths and JS animations.
+
+EXECUTION STRATEGY (BATCH PROCESSING):
+There are 100 components divided into 10 categories. Because you will hit your output token limit if you try to write them all at once, we will do this batch by batch.
+Right now, I only want you to generate "Category 1: Navigations & App Shells".
+Output the 10 complete HTML files for this category. Wrap each file's code in a markdown code block labeled with the file name (e.g., `001-collapsible-sidebar.html`).
+After you finish the 10th file, stop and write exactly: "BATCH 1 COMPLETE. Type 'Next' for Category 2."
+
+HERE IS THE FULL LIST OF 100 COMPONENTS (For your context):
+Category 1: Navigations (1. Collapsible Sidebar, 2. Sticky Mega Menu, 3. Offcanvas Menu, 4. Bottom Tab Bar, 5. Scroll Header, 6. Command Palette, 7. Breadcrumbs Dropdown, 8. FAB Menu, 9. Vertical Tabs, 10. Pagination Infinite Scroll)
+Category 2: Forms (11. OTP Input, 12. Multistep Form, 13. Drag Drop Upload, 14. Dual Range Slider, 15. Searchable Dropdown, 16. Password Meter, 17. Masked Input, 18. Floating Labels, 19. Radio Cards, 20. Auto Textarea)
+Category 3: Buttons (21. Magnetic Button, 22. Liquid Fill Button, 23. Text Scramble, 24. Ripple Button, 25. 3D Tilt Card, 26. Morphing Submit, 27. Back To Top, 28. Glow Button, 29. CSS Loader Button, 30. Hold To Confirm)
+Category 4: Data Viz (31. SVG Line Chart, 32. CSS Bar Chart, 33. Conic Donut Chart, 34. Radial Progress, 35. Heatmap, 36. Sparklines, 37. Stacked Area Chart, 38. Liquid Gauge, 39. Horizontal Progress, 40. Radar Chart)
+Category 5: Layouts (41. Bento Grid, 42. Masonry Layout, 43. Split Screen Hero, 44. Holy Grail, 45. Grid Auto Fit, 46. Sticky Sidebar, 47. Container Queries, 48. Centered Hero, 49. Magazine Layout, 50. Dashboard Layout)
+Category 6: Cards (51. Glass Profile Card, 52. 3D Pricing Table, 53. Ecommerce Product Card, 54. Testimonial Slider, 55. Accordion Faq, 56. Horizontal Snap Cards, 57. Stats Card, 58. Vertical Timeline, 59. Comment Card, 60. Author Bio Card)
+Category 7: Modals (61. Centered Modal, 62. Slide In Drawer, 63. Bottom Sheet, 64. Popover, 65. Toast Notifications, 66. Cookie Banner, 67. Fullscreen Overlay Menu, 68. Image Lightbox, 69. Confirmation Dialog, 70. Css Tooltips)
+Category 8: Feedback (71. Skeleton Loader, 72. Dual Ring Spinner, 73. Indeterminate Progress, 74. Bouncing Dots, 75. Pulse Heart, 76. Typing Indicator, 77. Shimmer Text, 78. Placeholder Shimmer, 79. Snackbar Ui, 80. Success Error Animations)
+Category 9: Ecommerce (81. Pricing Toggle, 82. Cart Dropdown, 83. Checkout Progress, 84. Coupon Input, 85. Quick View Modal, 86. Filter Sidebar, 87. Wishlist Toggle, 88. Star Rating, 89. Color Size Selector, 90. Floating Cart Button)
+Category 10: SaaS (91. Kanban Board, 92. Interactive Data Table, 93. Expanding Row Grid, 94. Calendar Widget, 95. File Manager Ui, 96. Email Client Ui, 97. Chat Messaging Ui, 98. Analytics Widgets, 99. Settings Panel, 100. Error Pages)
+
+START NOW: Generate the 10 complete HTML files for Category 1. Remember, real code, no placeholders.

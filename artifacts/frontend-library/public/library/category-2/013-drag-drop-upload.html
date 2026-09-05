@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drag and Drop Upload</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#0c1118; --panel:#151d28; --line:#304052; --text:#eff4fb; --muted:#8e9caf; --blue:#6aa7ff; --green:#68d5a0; --red:#ff7885; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--text); background:radial-gradient(circle at 50% 0,#173154,transparent 42%),var(--bg); font:15px/1.5 "DM Sans",sans-serif; } button, input { font:inherit; }
+    .card { width:min(600px,calc(100% - 34px)); padding:clamp(25px,6vw,50px); border:1px solid var(--line); border-radius:23px; background:#151d28e8; box-shadow:0 25px 70px #0008; } h1 { margin:0 0 8px; font-size:32px; letter-spacing:-.06em; } .intro { margin:0 0 27px; color:var(--muted); } .dropzone { display:grid; justify-items:center; padding:40px 20px; border:1.5px dashed #55708b; border-radius:15px; background:#6aa7ff08; text-align:center; transition:.2s; } .dropzone.dragover { border-color:var(--blue); background:#6aa7ff17; transform:scale(1.01); } .upload-icon { display:grid; place-items:center; width:54px; height:54px; margin-bottom:16px; border-radius:50%; color:var(--blue); background:#6aa7ff18; font-size:25px; } .dropzone strong { font-size:16px; } .dropzone p { margin:7px 0 19px; color:var(--muted); } .browse { padding:9px 15px; border:1px solid var(--blue); border-radius:8px; color:#fff; background:var(--blue); cursor:pointer; font-weight:700; } input[type=file] { display:none; }
+    .files { display:grid; gap:9px; margin-top:20px; } .file { display:grid; grid-template-columns:35px 1fr auto; align-items:center; gap:10px; padding:11px 13px; border:1px solid var(--line); border-radius:10px; background:#101720; } .file-icon { display:grid; place-items:center; width:31px; height:31px; border-radius:7px; color:var(--blue); background:#6aa7ff17; font-size:11px; font-weight:700; } .file-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; } .file-size { color:var(--muted); font-size:12px; } .remove { border:0; color:var(--muted); background:transparent; cursor:pointer; font-size:20px; } .remove:hover { color:var(--red); } .empty { color:var(--muted); font-size:13px; text-align:center; } .submit { width:100%; margin-top:25px; padding:13px; border:0; border-radius:9px; color:#07121d; background:var(--green); font-weight:700; cursor:pointer; } .submit:disabled { opacity:.4; cursor:not-allowed; }
+  </style>
+</head>
+<body>
+  <main class="card"><h1>Upload your assets</h1><p class="intro">Add up to 5 images or PDFs. Maximum file size is 10 MB each.</p><form id="uploadForm"><div class="dropzone" id="dropzone"><div class="upload-icon">↑</div><strong>Drop files here</strong><p>or choose files from your computer</p><label class="browse">Browse files<input id="fileInput" type="file" multiple accept="image/*,.pdf"></label></div><div class="files" id="files"><div class="empty">No files selected yet</div></div><button class="submit" id="submit" type="submit" disabled>Continue with files</button></form></main>
+  <script>
+    const dropzone = document.querySelector("#dropzone"), input = document.querySelector("#fileInput"), list = document.querySelector("#files"), submit = document.querySelector("#submit"); let selected = [];
+    function render() { list.innerHTML = selected.length ? selected.map((file,i) => `<div class="file"><span class="file-icon">${file.name.split(".").pop().toUpperCase()}</span><span class="file-name">${file.name}<small class="file-size"> · ${format(file.size)}</small></span><button class="remove" data-index="${i}" type="button" aria-label="Remove ${file.name}">×</button></div>`).join("") : '<div class="empty">No files selected yet</div>'; list.querySelectorAll(".remove").forEach(button => button.addEventListener("click", () => { selected.splice(Number(button.dataset.index),1); render(); })); submit.disabled = !selected.length; }
+    function format(bytes) { return bytes < 1024 * 1024 ? `${Math.ceil(bytes / 1024)} KB` : `${(bytes / 1024 / 1024).toFixed(1)} MB`; }
+    function add(files) { const incoming = [...files].filter(file => (file.type.startsWith("image/") || file.type === "application/pdf") && file.size <= 10 * 1024 * 1024); selected = [...selected, ...incoming].filter((file, i, all) => all.findIndex(item => item.name === file.name && item.size === file.size) === i).slice(0,5); render(); }
+    input.addEventListener("change", () => add(input.files)); ["dragenter","dragover"].forEach(event => dropzone.addEventListener(event, e => { e.preventDefault(); dropzone.classList.add("dragover"); })); ["dragleave","drop"].forEach(event => dropzone.addEventListener(event, e => { e.preventDefault(); dropzone.classList.remove("dragover"); })); dropzone.addEventListener("drop", e => add(e.dataTransfer.files));
+    document.querySelector("#uploadForm").addEventListener("submit", e => { e.preventDefault(); submit.textContent = `${selected.length} file${selected.length > 1 ? "s" : ""} ready ✓`; submit.disabled = true; });
+  </script>
+</body>
+</html>

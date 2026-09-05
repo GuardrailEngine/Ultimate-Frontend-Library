@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Author Bio Card</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#f7f4ee; --surface:#fffdf8; --ink:#27231f; --muted:#877e73; --line:#ded7cb; --red:#ba6048; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--ink); background:radial-gradient(circle at 10% 10%,#f5d6b9,transparent 35%),var(--bg); font:14px/1.5 "DM Sans",sans-serif; } .card { display:grid; grid-template-columns:150px 1fr; width:min(650px,calc(100% - 36px)); overflow:hidden; border:1px solid var(--line); border-radius:16px; background:var(--surface); box-shadow:0 18px 55px #6b483117; } .portrait { position:relative; display:grid; place-items:center; min-height:300px; overflow:hidden; background:linear-gradient(145deg,#d67e62,#774943); } .portrait:before { content:""; width:100px; height:135px; border-radius:50% 50% 42% 42%; background:#f2c09a; box-shadow:0 -22px 0 4px #513b35; transform:translateY(16px); } .portrait:after { content:"author"; position:absolute; bottom:18px; left:17px; color:#fff9; font:600 12px "Playfair Display",serif; letter-spacing:.1em; text-transform:uppercase; transform:rotate(-90deg); transform-origin:left; } .content { padding:31px; } .eyebrow { color:var(--red); font-size:11px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; } h1 { margin:10px 0 4px; font:700 34px/1 "Playfair Display",serif; letter-spacing:-.05em; } .role { color:var(--muted); } .bio { margin:25px 0; color:#645e57; font-size:15px; } .books { display:flex; gap:19px; padding:17px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); } .books strong { display:block; font:700 24px "Playfair Display",serif; } .books span { color:var(--muted); font-size:11px; } .links { display:flex; gap:14px; margin-top:21px; } .links a { color:var(--red); text-decoration:none; font-weight:700; } .links a:hover { text-decoration:underline; }
+    @media(max-width:560px) { .card { grid-template-columns:1fr; } .portrait { min-height:180px; } .portrait:after { transform:none; left:auto; right:18px; } .content { padding:25px; } }
+  </style>
+</head>
+<body>
+  <article class="card"><div class="portrait" aria-label="Illustrated portrait of an author"></div><div class="content"><span class="eyebrow">About the author</span><h1>Leila Benali</h1><div class="role">Writer, researcher, occasional gardener</div><p class="bio">Leila writes about the invisible structures that shape everyday life. Her work lives between culture, technology, and the stories we tell ourselves about both.</p><div class="books"><div><strong>03</strong><span>Books</span></div><div><strong>18</strong><span>Essays</span></div><div><strong>27k</strong><span>Readers</span></div></div><div class="links"><a href="#work">Read her work ↗</a><a href="#follow">Follow along ↗</a></div></div></article>
+</body>
+</html>

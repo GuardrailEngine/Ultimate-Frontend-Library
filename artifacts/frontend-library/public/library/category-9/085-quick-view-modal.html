@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick View Modal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#f7f4ee; --surface:#fff; --ink:#1c2520; --muted:#7b877e; --line:#e2dfd6; --orange:#c76a42; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--ink); background:radial-gradient(circle at 15% 0,#f4d3af,transparent 40%),var(--bg); font:14px/1.5 "Manrope",sans-serif; } .product { width:240px; padding:12px; border:1px solid var(--line); border-radius:14px; background:var(--surface); } .photo { position:relative; display:grid; place-items:center; height:250px; border-radius:9px; color:#fff9; background:linear-gradient(145deg,#d98c69,#6b4346); font-size:33px; } .view { position:absolute; right:10px; bottom:10px; padding:8px 10px; border:0; border-radius:7px; color:var(--ink); background:#fff; cursor:pointer; font-size:12px; font-weight:700; } .product h1 { margin:14px 5px 2px; font-size:17px; } .product p { margin:0 5px 12px; color:var(--muted); } .price { margin:0 5px 5px; font-weight:800; }
+    .overlay { position:fixed; z-index:4; inset:0; display:grid; place-items:center; padding:18px; background:#17211a99; opacity:0; visibility:hidden; transition:.2s; } .overlay.open { opacity:1; visibility:visible; } .modal { display:grid; grid-template-columns:1fr 1fr; width:min(760px,100%); overflow:hidden; border-radius:17px; background:var(--surface); box-shadow:0 25px 80px #1d241d44; transform:scale(.97); transition:.2s; } .open .modal { transform:none; } .large-photo { display:grid; place-items:center; min-height:430px; color:#fff9; background:linear-gradient(145deg,#d98c69,#6b4346); font-size:60px; } .detail { position:relative; padding:35px; } .close { position:absolute; top:15px; right:18px; border:0; color:var(--muted); background:transparent; font-size:24px; cursor:pointer; } .detail .category { color:var(--orange); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; } .detail h2 { margin:9px 0; font-size:31px; line-height:1; letter-spacing:-.08em; } .detail p { color:var(--muted); } .buy { width:100%; margin-top:20px; padding:12px; border:0; border-radius:8px; color:#fff; background:var(--orange); cursor:pointer; font-weight:700; }
+    @media(max-width:600px) { .modal { grid-template-columns:1fr; max-height:90vh; overflow:auto; } .large-photo { min-height:230px; } .detail { padding:25px; } }
+  </style>
+</head>
+<body>
+  <article class="product"><div class="photo">01<button class="view" id="open" type="button">Quick view</button></div><h1>Solace table lamp</h1><p>Warm, honest light.</p><div class="price">$148</div></article><div class="overlay" id="overlay"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="title"><div class="large-photo">01</div><div class="detail"><button class="close" id="close" type="button" aria-label="Close quick view">×</button><span class="category">Home objects</span><h2 id="title">Solace table lamp</h2><p>Warm light, honest materials, and a shape that belongs in the quiet corner. Designed to make the end of the day feel a little softer.</p><strong>$148</strong><button class="buy" id="buy" type="button">Add to bag</button></div></section></div>
+  <script>
+    const overlay=document.querySelector("#overlay"),open=document.querySelector("#open");function close(){overlay.classList.remove("open");document.body.style.overflow="";open.focus()}open.addEventListener("click",()=>{overlay.classList.add("open");document.body.style.overflow="hidden";document.querySelector("#close").focus()});document.querySelector("#close").addEventListener("click",close);overlay.addEventListener("click",e=>{if(e.target===overlay)close()});document.querySelector("#buy").addEventListener("click",e=>{e.currentTarget.textContent="Added to bag ✓";e.currentTarget.disabled=true});document.addEventListener("keydown",e=>{if(e.key==="Escape"&&overlay.classList.contains("open"))close()});
+  </script>
+</body>
+</html>

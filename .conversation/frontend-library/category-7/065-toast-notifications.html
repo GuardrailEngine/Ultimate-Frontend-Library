@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toast Notifications</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#f5f7fb; --surface:#fff; --ink:#1b2533; --muted:#8390a0; --line:#dfe5ed; --blue:#4a7fe3; --green:#36ad7c; --red:#d95867; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--ink); background:linear-gradient(145deg,#f5f7fb,#e7edff); font:14px/1.5 "DM Sans",sans-serif; } .page { text-align:center; } .eyebrow { color:var(--blue); font-weight:700; letter-spacing:.13em; text-transform:uppercase; } h1 { margin:12px 0 9px; font-size:clamp(42px,7vw,75px); line-height:.95; letter-spacing:-.1em; } .page p { margin:0 auto 35px; color:var(--muted); font-size:17px; } .buttons { display:flex; justify-content:center; gap:9px; flex-wrap:wrap; } .buttons button { padding:11px 15px; border:1px solid var(--line); border-radius:8px; color:var(--ink); background:var(--surface); cursor:pointer; font-weight:700; } .buttons button:hover { border-color:var(--blue); color:var(--blue); }
+    .toasts { position:fixed; z-index:4; right:20px; bottom:20px; display:grid; gap:10px; width:min(360px,calc(100% - 40px)); } .toast { display:grid; grid-template-columns:25px 1fr 20px; align-items:start; gap:10px; padding:14px; border:1px solid var(--line); border-left:4px solid var(--green); border-radius:10px; background:var(--surface); box-shadow:0 12px 30px #2639541e; animation:in .25s ease both; } .toast.error { border-left-color:var(--red); } .toast.info { border-left-color:var(--blue); } .toast-icon { color:var(--green); font-weight:700; } .error .toast-icon { color:var(--red); } .info .toast-icon { color:var(--blue); } .toast strong { display:block; } .toast p { margin:3px 0 0; color:var(--muted); font-size:12px; } .toast-close { border:0; color:var(--muted); background:transparent; cursor:pointer; } @keyframes in { from { opacity:0; transform:translateX(20px); } to { opacity:1; transform:none; } } .toast.out { animation:out .2s forwards; } @keyframes out { to { opacity:0; transform:translateX(20px); } }
+  </style>
+</head>
+<body>
+  <main class="page"><span class="eyebrow">Lightweight feedback</span><h1>Say it, then get out of the way.</h1><p>Toasts confirm background actions without stopping the user's flow.</p><div class="buttons"><button data-type="success" type="button">Show success</button><button data-type="info" type="button">Show info</button><button data-type="error" type="button">Show error</button></div></main><div class="toasts" id="toasts" aria-live="polite"></div>
+  <script>
+    const content={success:["✓","Saved successfully","Your workspace is up to date."],info:["i","New activity","Mina left a comment on your project."],error:["!","Could not save","Check your connection and try again."]}, toasts=document.querySelector("#toasts"); document.querySelectorAll(".buttons button").forEach(button=>button.addEventListener("click",()=>{ const type=button.dataset.type, data=content[type], toast=document.createElement("div"); toast.className=`toast ${type}`; toast.innerHTML=`<span class="toast-icon">${data[0]}</span><div><strong>${data[1]}</strong><p>${data[2]}</p></div><button class="toast-close" type="button" aria-label="Dismiss">×</button>`; toasts.append(toast); const remove=()=>{toast.classList.add("out");toast.addEventListener("animationend",()=>toast.remove(),{once:true})}; toast.querySelector(".toast-close").addEventListener("click",remove); setTimeout(remove,4500); }));
+  </script>
+</body>
+</html>

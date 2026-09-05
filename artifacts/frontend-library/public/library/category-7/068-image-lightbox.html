@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Lightbox</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#eef2f1; --surface:#fff; --ink:#1b2622; --muted:#7d8b83; --line:#dce5e0; --green:#278863; }
+    * { box-sizing:border-box; } body { margin:0; color:var(--ink); background:linear-gradient(145deg,#eef2f1,#dcece5); font:14px/1.5 "Manrope",sans-serif; } .page { width:min(900px,calc(100% - 36px)); margin:7vh auto; } .eyebrow { color:var(--green); font-weight:800; letter-spacing:.13em; text-transform:uppercase; } h1 { margin:10px 0 9px; font-size:clamp(42px,7vw,74px); line-height:.95; letter-spacing:-.1em; } .intro { margin:0 0 30px; color:var(--muted); font-size:17px; } .gallery { display:grid; grid-template-columns:1.25fr .75fr; grid-template-rows:180px 180px; gap:12px; } .image { display:grid; place-items:center; border:0; border-radius:14px; color:#ffffffaa; background:linear-gradient(135deg,#4f817d,#1b3845); font-size:26px; cursor:zoom-in; } .image:nth-child(1) { grid-row:span 2; background:linear-gradient(145deg,#d99069,#6d3f47); } .image:nth-child(3) { background:linear-gradient(145deg,#6f79b1,#2f395c); } .lightbox { position:fixed; z-index:5; inset:0; display:grid; place-items:center; padding:25px; background:#07110ecc; opacity:0; visibility:hidden; transition:.2s; } .lightbox.open { opacity:1; visibility:visible; } .viewer { position:relative; width:min(800px,100%); } .large-image { display:grid; place-items:center; width:100%; min-height:55vh; border:1px solid #ffffff33; border-radius:12px; color:#ffffffaa; background:linear-gradient(145deg,#d99069,#6d3f47); font-size:clamp(40px,8vw,85px); } .caption { margin-top:12px; color:#c0d0ca; } .close { position:absolute; top:-45px; right:0; border:0; color:#fff; background:transparent; font-size:29px; cursor:pointer; }
+    @media(max-width:560px) { .gallery { grid-template-columns:1fr 1fr; grid-template-rows:160px 160px; } .image:nth-child(1) { grid-column:span 2; grid-row:auto; } }
+  </style>
+</head>
+<body>
+  <main class="page"><span class="eyebrow">A closer look</span><h1>Let the image take over.</h1><p class="intro">A lightbox gives visual work a dedicated moment without forcing users onto another page.</p><section class="gallery"><button class="image" data-title="The warm room" type="button">01</button><button class="image" data-title="Open water" type="button">02</button><button class="image" data-title="Blue hour" type="button">03</button></section></main><div class="lightbox" id="lightbox"><div class="viewer"><button class="close" id="close" type="button" aria-label="Close lightbox">×</button><div class="large-image" id="largeImage">01</div><div class="caption" id="caption">The warm room</div></div></div>
+  <script>
+    const lightbox=document.querySelector("#lightbox"), large=document.querySelector("#largeImage"), caption=document.querySelector("#caption"); document.querySelectorAll(".image").forEach(image=>image.addEventListener("click",()=>{large.textContent=image.textContent; large.style.background=getComputedStyle(image).background; caption.textContent=image.dataset.title; lightbox.classList.add("open"); document.body.style.overflow="hidden"; document.querySelector("#close").focus();})); function close(){lightbox.classList.remove("open");document.body.style.overflow="";} document.querySelector("#close").addEventListener("click",close); lightbox.addEventListener("click",e=>{if(e.target===lightbox)close()}); document.addEventListener("keydown",e=>{if(e.key==="Escape"&&lightbox.classList.contains("open"))close()});
+  </script>
+</body>
+</html>

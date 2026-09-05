@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Popover</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#f4f6f8; --surface:#fff; --ink:#1c2730; --muted:#84909a; --line:#dfe6eb; --blue:#3675ca; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--ink); background:linear-gradient(145deg,#f4f6f8,#dfebf5); font:14px/1.5 "Manrope",sans-serif; } .page { text-align:center; } h1 { margin:0 0 10px; font-size:clamp(42px,7vw,75px); line-height:.95; letter-spacing:-.1em; } .page p { margin:0 auto 45px; color:var(--muted); font-size:17px; } .anchor { position:relative; display:inline-block; } .trigger { padding:12px 16px; border:1px solid var(--line); border-radius:8px; color:var(--ink); background:var(--surface); cursor:pointer; font-weight:700; box-shadow:0 5px 14px #2c40520b; } .trigger:hover, .open .trigger { border-color:var(--blue); color:var(--blue); }
+    .popover { position:absolute; z-index:2; top:calc(100% + 13px); left:50%; width:265px; padding:16px; border:1px solid var(--line); border-radius:11px; background:var(--surface); box-shadow:0 15px 40px #243c571c; text-align:left; opacity:0; visibility:hidden; transform:translate(-50%,-5px); transition:.18s; } .popover:before { content:""; position:absolute; top:-6px; left:50%; width:11px; height:11px; border-top:1px solid var(--line); border-left:1px solid var(--line); background:var(--surface); transform:translateX(-50%) rotate(45deg); } .open .popover { opacity:1; visibility:visible; transform:translate(-50%,0); } .pop-head { display:flex; justify-content:space-between; gap:15px; } .pop-head strong { font-size:14px; } .pop-head button { border:0; color:var(--muted); background:transparent; cursor:pointer; } .popover p { margin:8px 0 13px; color:var(--muted); font-size:12px; } .progress { height:6px; overflow:hidden; border-radius:99px; background:#e8edf1; } .progress span { display:block; width:72%; height:100%; border-radius:inherit; background:var(--blue); } .pop-foot { display:flex; justify-content:space-between; margin-top:10px; color:var(--muted); font-size:11px; }
+  </style>
+</head>
+<body>
+  <main class="page"><h1>Details, right where they help.</h1><p>A popover is ideal for a small amount of contextual information that should stay anchored to its trigger.</p><div class="anchor" id="anchor"><button class="trigger" id="trigger" type="button" aria-expanded="false">View project health ↗</button><div class="popover" role="status"><div class="pop-head"><strong>Launch readiness</strong><button id="dismiss" type="button" aria-label="Dismiss">×</button></div><p>Most of the work is moving on schedule.</p><div class="progress"><span></span></div><div class="pop-foot"><span>72% complete</span><span>Updated now</span></div></div></div></main>
+  <script>
+    const anchor=document.querySelector("#anchor"), trigger=document.querySelector("#trigger"); function toggle(open){anchor.classList.toggle("open",open);trigger.setAttribute("aria-expanded",open)} trigger.addEventListener("click",()=>toggle(!anchor.classList.contains("open"))); document.querySelector("#dismiss").addEventListener("click",()=>toggle(false)); document.addEventListener("click",e=>{if(!anchor.contains(e.target))toggle(false)}); document.addEventListener("keydown",e=>{if(e.key==="Escape")toggle(false)});
+  </script>
+</body>
+</html>

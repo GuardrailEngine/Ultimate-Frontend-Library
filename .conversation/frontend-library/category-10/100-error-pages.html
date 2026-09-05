@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Error Pages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#090d14; --text:#eef5ff; --muted:#8998ad; --line:#2a3a50; --blue:#6ca4ff; --orange:#f29a62; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--text); background:radial-gradient(circle at 50% 10%,#24385c,transparent 40%),var(--bg); font:15px/1.5 "Space Grotesk",sans-serif; } .page { width:min(780px,calc(100% - 36px)); text-align:center; } .switcher { display:inline-flex; gap:5px; padding:4px; border:1px solid var(--line); border-radius:99px; } .switcher button { padding:7px 11px; border:0; border-radius:99px; color:var(--muted); background:transparent; cursor:pointer; } .switcher button.active { color:var(--text); background:var(--line); } .error { display:none; padding:70px 0; } .error.active { display:block; animation:appear .3s; } @keyframes appear { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } } .code { color:var(--blue); font-size:clamp(85px,18vw,180px); font-weight:700; line-height:.8; letter-spacing:-.14em; } .server .code { color:var(--orange); } h1 { margin:25px 0 9px; font-size:32px; letter-spacing:-.08em; } .error p { max-width:470px; margin:0 auto 28px; color:var(--muted); font-size:17px; } .actions { display:flex; justify-content:center; gap:9px; } .actions a, .actions button { padding:11px 15px; border-radius:8px; color:var(--text); background:transparent; border:1px solid var(--line); cursor:pointer; font:700 14px "Space Grotesk",sans-serif; text-decoration:none; } .actions .primary { border-color:var(--blue); color:#08111d; background:var(--blue); } .detail { margin-top:35px; color:#5f7188; font-size:11px; }
+  </style>
+</head>
+<body>
+  <main class="page"><div class="switcher"><button class="active" data-view="not-found" type="button">404 Not found</button><button data-view="server" type="button">500 Server error</button></div><section class="error active" id="not-found"><div class="code">404</div><h1>This page took a wrong turn.</h1><p>The link may be old, or the page may have moved somewhere new. Either way, there is a clear path forward.</p><div class="actions"><a class="primary" href="#home">Back to home</a><button type="button" id="back">Go back</button></div><div class="detail">error_id: page_not_found · northstar/2026</div></section><section class="error server" id="server"><div class="code">500</div><h1>Something needs a moment.</h1><p>We hit an unexpected bump while loading this page. Your work is safe, and trying again is usually enough.</p><div class="actions"><button class="primary" id="retry" type="button">Try again</button><a href="#status">Check status</a></div><div class="detail">error_id: server_recovering · northstar/2026</div></section></main>
+  <script>
+    const buttons=document.querySelectorAll(".switcher button"),views=document.querySelectorAll(".error");buttons.forEach(button=>button.addEventListener("click",()=>{buttons.forEach(item=>item.classList.remove("active"));button.classList.add("active");views.forEach(view=>view.classList.toggle("active",view.id===button.dataset.view))}));document.querySelector("#back").addEventListener("click",()=>history.length>1?history.back():location.hash="home");document.querySelector("#retry").addEventListener("click",e=>{e.currentTarget.textContent="Trying again…";setTimeout(()=>e.currentTarget.textContent="Try again",1000)});
+  </script>
+</body>
+</html>

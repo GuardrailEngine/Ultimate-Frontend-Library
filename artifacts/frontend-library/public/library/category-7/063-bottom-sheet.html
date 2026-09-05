@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bottom Sheet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#080c13; --surface:#161e2a; --line:#2d3b4f; --text:#eff4fb; --muted:#8b99ac; --cyan:#6bd8cf; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--text); background:radial-gradient(circle at 50% 0,#1c3d4d,transparent 40%),var(--bg); font:15px/1.5 "DM Sans",sans-serif; } .page { text-align:center; } .eyebrow { color:var(--cyan); font-weight:700; letter-spacing:.13em; text-transform:uppercase; } h1 { margin:13px 0 9px; font-size:clamp(43px,7vw,76px); line-height:.93; letter-spacing:-.1em; } .page p { margin:0 auto 32px; color:var(--muted); font-size:17px; } .open { padding:12px 18px; border:1px solid var(--cyan); border-radius:8px; color:#071619; background:var(--cyan); cursor:pointer; font-weight:700; }
+    .scrim { position:fixed; z-index:5; inset:0; display:flex; align-items:flex-end; background:#0009; opacity:0; visibility:hidden; transition:.25s; } .scrim.open { opacity:1; visibility:visible; } .sheet { width:min(650px,100%); margin:auto; padding:12px 25px 32px; border:1px solid var(--line); border-bottom:0; border-radius:20px 20px 0 0; background:var(--surface); transform:translateY(100%); transition:.35s cubic-bezier(.7,0,.2,1); } .open .sheet { transform:none; } .handle { width:42px; height:4px; margin:0 auto 28px; border-radius:99px; background:#68798d; } .sheet h2 { margin:0 0 7px; font-size:25px; letter-spacing:-.07em; } .sheet p { margin:0 0 20px; color:var(--muted); } .options { display:grid; gap:7px; } .option { display:flex; align-items:center; gap:12px; width:100%; padding:13px; border:1px solid var(--line); border-radius:10px; color:var(--text); background:transparent; text-align:left; cursor:pointer; } .option:hover { border-color:var(--cyan); background:#6bd8cf0d; } .option i { display:grid; place-items:center; width:30px; height:30px; border-radius:8px; color:var(--cyan); background:#6bd8cf14; font-style:normal; } .close { width:100%; margin-top:20px; padding:12px; border:0; border-radius:8px; color:var(--muted); background:#ffffff08; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <main class="page"><span class="eyebrow">Mobile-first action</span><h1>Bring the choices up.</h1><p>A bottom sheet anchors secondary actions to the thumb zone without losing the context behind them.</p><button class="open" id="open" type="button">Open share sheet</button></main><div class="scrim" id="scrim"><section class="sheet" role="dialog" aria-modal="true" aria-labelledby="title"><div class="handle"></div><h2 id="title">Share this workspace</h2><p>Choose how you would like to send it.</p><div class="options"><button class="option" data-result="Link copied to clipboard" type="button"><i>↗</i><span>Copy share link</span></button><button class="option" data-result="Email composer opened" type="button"><i>✉</i><span>Send by email</span></button><button class="option" data-result="Invite flow opened" type="button"><i>♧</i><span>Invite people</span></button></div><button class="close" id="close" type="button">Cancel</button></section></div>
+  <script>
+    const scrim=document.querySelector("#scrim"), open=document.querySelector("#open"); function close(){scrim.classList.remove("open");document.body.style.overflow="";open.focus()} open.addEventListener("click",()=>{scrim.classList.add("open");document.body.style.overflow="hidden";document.querySelector(".option").focus()}); document.querySelector("#close").addEventListener("click",close); scrim.addEventListener("click",e=>{if(e.target===scrim)close()}); document.querySelectorAll(".option").forEach(option=>option.addEventListener("click",()=>{open.textContent=option.dataset.result+" ✓";close()})); document.addEventListener("keydown",e=>{if(e.key==="Escape"&&scrim.classList.contains("open"))close()});
+  </script>
+</body>
+</html>

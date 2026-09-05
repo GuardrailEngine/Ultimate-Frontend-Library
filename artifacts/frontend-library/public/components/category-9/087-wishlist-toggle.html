@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wishlist Toggle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#f6f2ed; --surface:#fff; --ink:#20231f; --muted:#7e847c; --line:#e3ded6; --red:#d95c65; }
+    * { box-sizing:border-box; } body { display:grid; place-items:center; min-height:100vh; margin:0; color:var(--ink); background:radial-gradient(circle at 80% 0,#f6d0bf,transparent 36%),var(--bg); font:14px/1.5 "Manrope",sans-serif; } .card { position:relative; width:min(370px,calc(100% - 36px)); padding:13px 13px 21px; border:1px solid var(--line); border-radius:17px; background:var(--surface); box-shadow:0 20px 55px #604e4412; } .image { display:grid; place-items:center; height:300px; border-radius:11px; color:#fff9; background:linear-gradient(145deg,#e0a17e,#71504d); font-size:34px; } .wishlist { position:absolute; top:25px; right:25px; display:grid; place-items:center; width:37px; height:37px; border:0; border-radius:50%; color:var(--red); background:#fff; cursor:pointer; font-size:20px; box-shadow:0 3px 12px #301c1c18; } .wishlist.active { color:#fff; background:var(--red); animation:pop .3s; } @keyframes pop { 50% { transform:scale(1.2); } } .info { padding:0 7px; } .category { display:block; margin-top:18px; color:var(--muted); font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; } h1 { margin:6px 0 3px; font-size:22px; letter-spacing:-.07em; } .info p { margin:0; color:var(--muted); } .notice { min-height:20px; margin-top:12px; color:var(--red); font-size:12px; }
+  </style>
+</head>
+<body>
+  <article class="card"><div class="image">Solace</div><button class="wishlist" id="wishlist" type="button" aria-label="Add Solace lamp to wishlist">♡</button><div class="info"><span class="category">Home objects</span><h1>Solace table lamp</h1><p>$148 · Available now</p><div class="notice" id="notice" role="status"></div></div></article>
+  <script>
+    const button=document.querySelector("#wishlist"),notice=document.querySelector("#notice");button.addEventListener("click",()=>{const active=button.classList.toggle("active");button.textContent=active?"♥":"♡";button.setAttribute("aria-label",active?"Remove Solace lamp from wishlist":"Add Solace lamp to wishlist");notice.textContent=active?"Added to your wishlist.":"Removed from your wishlist.";});
+  </script>
+</body>
+</html>
