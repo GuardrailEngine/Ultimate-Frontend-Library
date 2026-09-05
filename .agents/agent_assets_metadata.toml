@@ -165,3 +165,45 @@ storage_uri = "gcs://replit-rams-assets-worf/rams/assets/conversation:96d1b6a6-8
 storage_version_token = "1788647704152262"
 content_type = "application/octet-stream"
 source_uri = "file://frontend-library-all-categories.zip"
+
+[[outputs]]
+id = "tGqCzQ3BLM463-lbstTll"
+uri = "file://attached_assets/generated_images/frontend-field-guide-square.png"
+type = "image"
+title = "Frontend Field Guide — Square"
+description = "صورة مربعة مناسبة لمنشور LinkedIn أو X."
+logical_id = "62037f79-019a-4e2f-8323-26b79f1258aa"
+content_hash = "sha256:40ddb749c4b7e68696f2c5e5514c183c7be9177d2159977e33df06b05ae03a92"
+size = 1684130
+mtime_ms = 1788649209858
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:63ea2975-8c95-42cf-bc8c-790b368f64c8/62037f79-019a-4e2f-8323-26b79f1258aa/77b29576-e6ca-4d7d-ad54-cd01a1fb1d79"
+storage_version_token = "1788649220088203"
+content_type = "image/png"
+
+[[outputs]]
+id = "xD-FgTUXn9KIBWjBGlfDx"
+uri = "file://attached_assets/generated_images/frontend-field-guide-portrait.png"
+type = "image"
+title = "Frontend Field Guide — Portrait"
+description = "صورة عمودية مناسبة للستوري والمنشورات الطولية."
+logical_id = "aaeffc1c-5ffc-4481-949f-7cfad57af985"
+content_hash = "sha256:3b55c2f63ca75e69d1d14c08e727e7055fb1d41699043ed7749d43bbca1cf665"
+size = 1468864
+mtime_ms = 1788649213638
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:63ea2975-8c95-42cf-bc8c-790b368f64c8/aaeffc1c-5ffc-4481-949f-7cfad57af985/f17a68f9-ff93-4124-8d70-7862bbb6f8ed"
+storage_version_token = "1788649220788409"
+content_type = "image/png"
+
+[[outputs]]
+id = "HGoxqLkic340yrFEZ3sCS"
+uri = "file://attached_assets/generated_images/frontend-field-guide-wide.png"
+type = "image"
+title = "Frontend Field Guide — Wide"
+description = "صورة عريضة مناسبة لغلاف المنشور أو رابط المشاركة."
+logical_id = "71d4ae34-277e-4352-ad82-d77d54b19aa6"
+content_hash = "sha256:b6195007d292adbd456aa55fccc7446ad01ef9600487d4b6f45fa9405da12e4f"
+size = 1531017
+mtime_ms = 1788649211558
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:63ea2975-8c95-42cf-bc8c-790b368f64c8/71d4ae34-277e-4352-ad82-d77d54b19aa6/fb59f938-4b91-484f-9f27-0d4316674b8b"
+storage_version_token = "1788649221436207"
+content_type = "image/png"
