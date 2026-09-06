@@ -25,6 +25,7 @@ import { Route, Router as WouterRouter, Switch, useLocation } from 'wouter';
 
 const queryClient = new QueryClient();
 const GUMROAD_URL = 'https://simochakir.gumroad.com/l/szcvz';
+const componentBasePath = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/components`;
 
 type ComponentItem = {
   id: number;
@@ -211,7 +212,7 @@ const components: ComponentItem[] = files.map((file, index) => {
     categoryName: categoryNames[category - 1],
     description: `${categoryDetails[category - 1]} ${slug.split('-').join(' ')} with no build step.`,
     tags: categoryTags[category - 1],
-    sourcePath: `/components/category-${category}/${file}`,
+    sourcePath: `${componentBasePath}/category-${category}/${file}`,
   };
 });
 
