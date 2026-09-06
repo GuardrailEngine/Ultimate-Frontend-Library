@@ -37,7 +37,6 @@ const previewGuard = `
   const redirect = () => window.location.replace(gumroadUrl);
   document.addEventListener('contextmenu', (event) => {
     event.preventDefault();
-    redirect();
   }, true);
   document.addEventListener('selectstart', (event) => event.preventDefault(), true);
   document.addEventListener('copy', (event) => event.preventDefault(), true);

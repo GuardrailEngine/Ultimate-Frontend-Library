@@ -27,7 +27,6 @@
         document.documentElement.style.webkitUserSelect = 'none';
         document.addEventListener('contextmenu', (event) => {
           event.preventDefault();
-          redirect();
         }, true);
         document.addEventListener('selectstart', (event) => event.preventDefault(), true);
         document.addEventListener('copy', (event) => event.preventDefault(), true);
