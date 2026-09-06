@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
     <title>The 2026 Ultimate Frontend Library</title>
-    <meta name="description" content="The 2026 Ultimate Frontend Library — built on Replit. Update this description to reflect the app." />
+    <meta name="description" content="The 2026 Ultimate Frontend Library — 100 standalone HTML, CSS, and Vanilla JavaScript components." />
     <meta name="robots" content="index, follow" />
     <meta property="og:title" content="The 2026 Ultimate Frontend Library" />
-    <meta property="og:description" content="The 2026 Ultimate Frontend Library — built on Replit. Update this description to reflect the app." />
+    <meta property="og:description" content="The 2026 Ultimate Frontend Library — 100 standalone HTML, CSS, and Vanilla JavaScript components." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="The 2026 Ultimate Frontend Library" />
-    <meta name="twitter:description" content="The 2026 Ultimate Frontend Library — built on Replit. Update this description to reflect the app." />
+    <meta name="twitter:description" content="The 2026 Ultimate Frontend Library — 100 standalone HTML, CSS, and Vanilla JavaScript components." />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,6 +19,35 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      (() => {
+        const gumroadUrl = 'https://simochakir.gumroad.com/l/szcvz';
+        const redirect = () => window.location.replace(gumroadUrl);
+        document.documentElement.style.userSelect = 'none';
+        document.documentElement.style.webkitUserSelect = 'none';
+        document.addEventListener('contextmenu', (event) => {
+          event.preventDefault();
+          redirect();
+        }, true);
+        document.addEventListener('selectstart', (event) => event.preventDefault(), true);
+        document.addEventListener('copy', (event) => event.preventDefault(), true);
+        document.addEventListener('cut', (event) => event.preventDefault(), true);
+        document.addEventListener('dragstart', (event) => event.preventDefault(), true);
+        document.addEventListener('keydown', (event) => {
+          const key = event.key.toLowerCase();
+          const devToolsShortcut =
+            event.key === 'F12' ||
+            ((event.ctrlKey || event.metaKey) && event.shiftKey && ['i', 'j', 'c'].includes(key)) ||
+            ((event.ctrlKey || event.metaKey) && key === 'u') ||
+            (event.metaKey && event.altKey && key === 'i');
+          if (devToolsShortcut || ((event.ctrlKey || event.metaKey) && key === 'c')) {
+            event.preventDefault();
+            event.stopPropagation();
+            redirect();
+          }
+        }, true);
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

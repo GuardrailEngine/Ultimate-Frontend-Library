@@ -5,9 +5,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   ArrowUpRight,
-  Check,
   ChevronRight,
-  Clipboard,
   Code2,
   ExternalLink,
   Eye,
@@ -26,6 +24,7 @@ import {
 import { Route, Router as WouterRouter, Switch, useLocation } from 'wouter';
 
 const queryClient = new QueryClient();
+const GUMROAD_URL = 'https://simochakir.gumroad.com/l/szcvz';
 
 type ComponentItem = {
   id: number;
@@ -600,56 +599,22 @@ function EmptyState({ query, onReset }: { query: string; onReset: () => void }) 
 }
 
 function ComponentDrawer({ component, favorite, onFavorite, onClose }: { component: ComponentItem; favorite: boolean; onFavorite: () => void; onClose: () => void }) {
-  const [tab, setTab] = useState<'preview' | 'code'>('preview');
-  const [code, setCode] = useState('');
-  const [loadingCode, setLoadingCode] = useState(false);
-  const [copyState, setCopyState] = useState<'idle' | 'copied'>('idle');
-
-  useEffect(() => {
-    if (tab !== 'code') return;
-    const controller = new AbortController();
-    setLoadingCode(true);
-    fetch(component.sourcePath, { signal: controller.signal })
-      .then((response) => response.text())
-      .then((text) => setCode(text))
-      .catch(() => setCode('Unable to load this source file.'))
-      .finally(() => setLoadingCode(false));
-    return () => controller.abort();
-  }, [component.sourcePath, tab]);
-
-  const copySource = async () => {
-    if (!code) return;
-    await navigator.clipboard?.writeText(code);
-    setCopyState('copied');
-    setTimeout(() => setCopyState('idle'), 1600);
-  };
-
   return (
     <div className="fixed inset-0 z-[60] flex items-end justify-center bg-[#242a3b]/45 p-0 backdrop-blur-sm sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-label={`${component.title} details`}>
       <button className="absolute inset-0 cursor-default" onClick={onClose} aria-label="Close component details" data-testid="button-close-drawer-overlay" />
       <div className="relative z-10 flex h-[92dvh] w-full max-w-6xl flex-col overflow-hidden rounded-t-[24px] border bg-[#f7f2ea] shadow-[0_30px_100px_rgba(28,30,42,.3)] sm:h-[88dvh] sm:rounded-[24px]" style={{ borderColor: 'var(--line)' }}>
         <header className="flex flex-wrap items-center justify-between gap-4 border-b px-5 py-4 md:px-7" style={{ borderColor: 'var(--line)' }}>
           <div className="flex min-w-0 items-center gap-3"><div className="mono rounded-md bg-[#242a3b] px-2 py-1 text-[10px] text-[#f5f0e8]">{String(component.id).padStart(3, '0')}</div><div className="min-w-0"><h2 className="display truncate text-lg font-bold tracking-[-.04em] md:text-xl">{component.title}</h2><p className="truncate text-xs text-[#85848a]">{component.categoryName} <span className="mx-1">·</span> standalone HTML file</p></div></div>
-          <div className="flex items-center gap-2"><button onClick={onFavorite} className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold transition ${favorite ? 'border-[#ec684d]/30 bg-[#ec684d] text-white' : 'bg-[#fffdf8] text-[#6f7078] hover:text-[var(--coral)]'}`} style={{ borderColor: favorite ? undefined : 'var(--line)' }} data-testid="button-drawer-favorite"><Heart size={14} fill={favorite ? 'currentColor' : 'none'} /><span className="hidden sm:inline">{favorite ? 'Saved' : 'Save'}</span></button><a href={component.sourcePath} target="_blank" rel="noreferrer" className="grid size-9 place-items-center rounded-lg border bg-[#fffdf8] text-[#6f7078] transition hover:text-[var(--coral)]" style={{ borderColor: 'var(--line)' }} aria-label="Open component in a new tab" data-testid="link-open-new-tab"><ExternalLink size={15} /></a><button onClick={onClose} className="grid size-9 place-items-center rounded-lg border bg-[#fffdf8] text-[#6f7078] transition hover:bg-[#242a3b] hover:text-white" style={{ borderColor: 'var(--line)' }} aria-label="Close component details" data-testid="button-close-drawer"><X size={17} /></button></div>
+          <div className="flex items-center gap-2"><button onClick={onFavorite} className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold transition ${favorite ? 'border-[#ec684d]/30 bg-[#ec684d] text-white' : 'bg-[#fffdf8] text-[#6f7078] hover:text-[var(--coral)]'}`} style={{ borderColor: favorite ? undefined : 'var(--line)' }} data-testid="button-drawer-favorite"><Heart size={14} fill={favorite ? 'currentColor' : 'none'} /><span className="hidden sm:inline">{favorite ? 'Saved' : 'Save'}</span></button><a href={GUMROAD_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-lg border bg-[#242a3b] px-3 py-2 text-xs font-semibold text-[#f5f0e8] transition hover:bg-[#30374d]" style={{ borderColor: 'var(--line)' }} aria-label="Get the source code on Gumroad" data-testid="link-get-source-code"><Code2 size={14} /><span>Get Source Code</span></a><button onClick={onClose} className="grid size-9 place-items-center rounded-lg border bg-[#fffdf8] text-[#6f7078] transition hover:bg-[#242a3b] hover:text-white" style={{ borderColor: 'var(--line)' }} aria-label="Close component details" data-testid="button-close-drawer"><X size={17} /></button></div>
         </header>
         <div className="flex items-center justify-between gap-4 border-b px-5 py-3 md:px-7" style={{ borderColor: 'var(--line)' }}>
-          <div className="flex rounded-lg border bg-[#eee8df] p-1" style={{ borderColor: 'var(--line)' }} role="tablist" aria-label="Component view">
-            <button onClick={() => setTab('preview')} className={`inline-flex items-center gap-2 rounded-md px-3 py-2 text-xs font-semibold transition ${tab === 'preview' ? 'bg-[#fffdf8] text-[#242a3b] shadow-sm' : 'text-[#88858a]'}`} role="tab" aria-selected={tab === 'preview'} data-testid="tab-component-preview"><Eye size={14} /> Preview</button>
-            <button onClick={() => setTab('code')} className={`inline-flex items-center gap-2 rounded-md px-3 py-2 text-xs font-semibold transition ${tab === 'code' ? 'bg-[#fffdf8] text-[#242a3b] shadow-sm' : 'text-[#88858a]'}`} role="tab" aria-selected={tab === 'code'} data-testid="tab-component-code"><Code2 size={14} /> Source</button>
-          </div>
-          <div className="hidden items-center gap-2 text-[10px] text-[#918e89] sm:flex"><span className="size-1.5 rounded-full bg-[var(--moss)]" /> interactive preview <span className="mx-1 text-[#c2bdb4]">·</span> no build step</div>
+          <div className="inline-flex items-center gap-2 rounded-lg border bg-[#fffdf8] px-3 py-2 text-xs font-semibold text-[#242a3b]" style={{ borderColor: 'var(--line)' }}><Eye size={14} /> Live preview</div>
+          <div className="hidden items-center gap-2 text-[10px] text-[#918e89] sm:flex"><span className="size-1.5 rounded-full bg-[var(--moss)]" /> interactive preview <span className="mx-1 text-[#c2bdb4]">·</span> source code available on Gumroad</div>
         </div>
         <div className="min-h-0 flex-1 bg-[#e7e0d6] p-3 md:p-5">
-          {tab === 'preview' ? (
-            <div className="relative h-full overflow-hidden rounded-xl border bg-[#fbf8f2] shadow-inner" style={{ borderColor: 'rgba(36,42,59,.15)' }}><iframe src={component.sourcePath} title={`${component.title} interactive preview`} sandbox="allow-scripts allow-forms" className="h-full w-full border-0" /></div>
-          ) : (
-            <div className="relative h-full overflow-hidden rounded-xl border bg-[#202637] text-[#dbe1ec]" style={{ borderColor: 'rgba(36,42,59,.15)' }}>
-              <div className="flex items-center justify-between border-b border-white/10 px-4 py-3"><div className="flex items-center gap-2"><span className="size-2 rounded-full bg-[#ec684d]" /><span className="mono text-[10px] text-[#aab4c4]">{component.file}</span></div><button onClick={copySource} disabled={loadingCode || !code} className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[.07] px-3 py-2 text-[11px] font-semibold text-[#e8edf5] transition hover:bg-white/[.14] disabled:opacity-40" data-testid="button-copy-source">{copyState === 'copied' ? <Check size={14} /> : <Clipboard size={14} />}{copyState === 'copied' ? 'Copied' : 'Copy source'}</button></div>
-              {loadingCode ? <div className="space-y-3 p-5">{Array.from({ length: 12 }).map((_, index) => <div key={index} className="h-3 rounded bg-white/[.08]" style={{ width: `${35 + (index * 17) % 56}%` }} />)}</div> : <pre className="scrollbar-thin h-[calc(100%-53px)] overflow-auto p-5 text-[11px] leading-[1.8] md:text-xs"><code>{code}</code></pre>}
-            </div>
-          )}
+          <div className="relative h-full overflow-hidden rounded-xl border bg-[#fbf8f2] shadow-inner" style={{ borderColor: 'rgba(36,42,59,.15)' }}><iframe src={component.sourcePath} title={`${component.title} interactive preview`} sandbox="allow-scripts allow-forms" className="h-full w-full border-0" /></div>
         </div>
-        <footer className="flex items-center justify-between gap-4 border-t px-5 py-3 text-[11px] text-[#85848a] md:px-7" style={{ borderColor: 'var(--line)' }}><span className="truncate">{component.description}</span><span className="mono shrink-0 text-[10px]">HTML · CSS · JS</span></footer>
+        <footer className="flex items-center justify-between gap-4 border-t px-5 py-3 text-[11px] text-[#85848a] md:px-7" style={{ borderColor: 'var(--line)' }}><span className="truncate">{component.description}</span><a href={GUMROAD_URL} target="_blank" rel="noreferrer" className="mono shrink-0 text-[10px] text-[var(--coral)] transition hover:underline" data-testid="footer-get-source-code">GET SOURCE CODE ↗</a></footer>
       </div>
     </div>
   );
