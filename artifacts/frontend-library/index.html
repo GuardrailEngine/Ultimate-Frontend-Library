@@ -21,6 +21,12 @@
     <div id="root"></div>
     <script>
       (() => {
+        const cleanUrl = new URL(window.location.href);
+        if (cleanUrl.searchParams.has('nativeBrowserPresentationStyle')) {
+          cleanUrl.searchParams.delete('nativeBrowserPresentationStyle');
+          window.history.replaceState({}, document.title, `${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}`);
+        }
+
         const gumroadUrl = 'https://simochakir.gumroad.com/l/szcvz';
         const redirect = () => window.location.replace(gumroadUrl);
         document.documentElement.style.userSelect = 'none';
