@@ -1,8 +1,7 @@
-import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   ArrowUpRight,
   ChevronRight,
@@ -21,9 +20,7 @@ import {
   X,
   Zap,
 } from 'lucide-react';
-import { Route, Router as WouterRouter, Switch, useLocation } from 'wouter';
 
-const queryClient = new QueryClient();
 const GUMROAD_URL = 'https://simochakir.gumroad.com/l/szcvz';
 const componentBasePath = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/components`;
 
@@ -36,6 +33,8 @@ type ComponentItem = {
   description: string;
   tags: string[];
   sourcePath: string;
+  previewPath: string;
+  isLive: boolean;
 };
 
 const categoryNames = [
@@ -204,6 +203,7 @@ function prettifyFile(file: string) {
 const components: ComponentItem[] = files.map((file, index) => {
   const category = Math.floor(index / 10) + 1;
   const slug = file.replace(/^\d+-/, '').replace('.html', '');
+  const isLive = index < 5;
   return {
     id: index + 1,
     file,
@@ -212,31 +212,21 @@ const components: ComponentItem[] = files.map((file, index) => {
     categoryName: categoryNames[category - 1],
     description: `${categoryDetails[category - 1]} ${slug.split('-').join(' ')} with no build step.`,
     tags: categoryTags[category - 1],
-    sourcePath: `${componentBasePath}/category-${category}/${file}`,
+    sourcePath: isLive ? `${componentBasePath}/category-${category}/${file}` : '',
+    previewPath: `${import.meta.env.BASE_URL.replace(/\/$/, '')}/previews/category-${category}/${String(index + 1).padStart(3, '0')}.png`,
+    isLive,
   };
 });
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-          <RoutedErrorBoundary>
-            <Switch>
-              <Route path="/" component={LibraryHome} />
-              <Route component={NotFound} />
-            </Switch>
-          </RoutedErrorBoundary>
-        </WouterRouter>
-        <Toaster />
-      </TooltipProvider>
-    </QueryClientProvider>
+    <TooltipProvider>
+      <ErrorBoundary resetKey={window.location.pathname}>
+        <LibraryHome />
+      </ErrorBoundary>
+      <Toaster />
+    </TooltipProvider>
   );
-}
-
-function RoutedErrorBoundary({ children }: { children: ReactNode }) {
-  const [location] = useLocation();
-  return <ErrorBoundary resetKey={location}>{children}</ErrorBoundary>;
 }
 
 function LibraryHome() {
@@ -565,8 +555,13 @@ function FeaturedCard({ component, index, onOpen }: { component: ComponentItem; 
   return (
     <button onClick={() => onOpen(component)} className="group overflow-hidden rounded-2xl border bg-[#fffdf8] text-left shadow-[0_8px_28px_rgba(52,44,37,.05)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(52,44,37,.12)]" style={{ borderColor: 'var(--line)' }} data-testid={`card-featured-${component.id}`}>
       <div className="relative h-36 overflow-hidden border-b bg-[#ebe5dc]" style={{ borderColor: 'var(--line)' }}>
-        <iframe src={component.sourcePath} title={`${component.title} live preview`} loading="lazy" sandbox="allow-scripts" className="pointer-events-none absolute left-0 top-0 h-[400%] w-[400%] origin-top-left scale-[.25] border-0" />
+        {component.isLive ? (
+          <iframe src={component.sourcePath} title={`${component.title} live preview`} loading="lazy" sandbox="allow-scripts" className="pointer-events-none absolute left-0 top-0 h-[400%] w-[400%] origin-top-left scale-[.25] border-0" />
+        ) : (
+          <img src={component.previewPath} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover object-top" />
+        )}
         <div className="absolute left-3 top-3 rounded-md bg-[#f5f0e8]/90 px-2 py-1 mono text-[9px] text-[#62616a] backdrop-blur">{String(component.id).padStart(3, '0')}</div>
+        <div className="absolute bottom-3 left-3 rounded-md bg-[#f5f0e8]/90 px-2 py-1 mono text-[9px] text-[#62616a] backdrop-blur">{component.isLive ? 'LIVE' : 'PREVIEW'}</div>
         <span className="absolute bottom-3 right-3 grid size-8 place-items-center rounded-full bg-[#f5f0e8] text-[#242a3b] opacity-0 shadow-sm transition group-hover:opacity-100"><ArrowUpRight size={15} /></span>
       </div>
       <div className="p-4"><div className="mb-2 flex items-center justify-between gap-2"><span className="mono text-[9px] uppercase tracking-[.12em] text-[var(--coral)]">{component.categoryName}</span><ChevronRight size={14} className="text-[#a4a19d] transition group-hover:translate-x-1" /></div><h3 className="font-semibold tracking-[-.02em]">{component.title}</h3><p className="mt-1 line-clamp-1 text-xs text-[#88868a]">{index === 0 ? 'A strong first impression.' : 'Worth keeping close.'}</p></div>
@@ -575,13 +570,15 @@ function FeaturedCard({ component, index, onOpen }: { component: ComponentItem; 
 }
 
 function ComponentCard({ component, index, favorite, onFavorite, onOpen }: { component: ComponentItem; index: number; favorite: boolean; onFavorite: () => void; onOpen: () => void }) {
-  const [loaded, setLoaded] = useState(true);
   return (
     <article className="group overflow-hidden rounded-2xl border bg-[#fffdf8] shadow-[0_5px_18px_rgba(52,44,37,.035)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_32px_rgba(52,44,37,.1)]" style={{ borderColor: 'var(--line)' }} data-testid={`card-component-${component.id}`}>
       <div className="relative h-[190px] overflow-hidden border-b bg-[#eae4db]" style={{ borderColor: 'var(--line)' }}>
-        {!loaded && <div className="skeleton absolute inset-0" />}
-        {loaded && <iframe src={component.sourcePath} title={`${component.title} live preview`} loading="lazy" sandbox="allow-scripts" onLoad={() => setLoaded(true)} className="pointer-events-none absolute left-0 top-0 h-[420%] w-[420%] origin-top-left scale-[.238] border-0" />}
-        <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-md bg-[#f5f0e8]/90 px-2 py-1 backdrop-blur"><span className="size-1.5 rounded-full bg-[var(--moss)]" /><span className="mono text-[9px] text-[#686871]">LIVE</span></div>
+        {component.isLive ? (
+          <iframe src={component.sourcePath} title={`${component.title} live preview`} loading="lazy" sandbox="allow-scripts" className="pointer-events-none absolute left-0 top-0 h-[420%] w-[420%] origin-top-left scale-[.238] border-0" />
+        ) : (
+          <img src={component.previewPath} alt={`${component.title} preview`} loading="lazy" className="absolute inset-0 h-full w-full object-cover object-top" />
+        )}
+        <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-md bg-[#f5f0e8]/90 px-2 py-1 backdrop-blur"><span className={`size-1.5 rounded-full ${component.isLive ? 'bg-[var(--moss)]' : 'bg-[#b47b24]'}`} /><span className="mono text-[9px] text-[#686871]">{component.isLive ? 'LIVE' : 'PREVIEW'}</span></div>
         <button onClick={onFavorite} className={`absolute right-3 top-3 z-20 grid size-8 place-items-center rounded-lg border backdrop-blur transition ${favorite ? 'border-[#ec684d]/30 bg-[#ec684d] text-white' : 'border-[#242a3b]/10 bg-[#f5f0e8]/90 text-[#77777d] hover:bg-white hover:text-[var(--coral)]'}`} aria-label={favorite ? `Remove ${component.title} from saved pieces` : `Save ${component.title}`} data-testid={`button-favorite-${component.id}`}><Heart size={14} fill={favorite ? 'currentColor' : 'none'} /></button>
         <button onClick={onOpen} className="absolute inset-0 z-10 cursor-zoom-in" aria-label={`Open ${component.title} preview`} data-testid={`button-open-component-${component.id}`} />
       </div>
@@ -605,15 +602,21 @@ function ComponentDrawer({ component, favorite, onFavorite, onClose }: { compone
       <button className="absolute inset-0 cursor-default" onClick={onClose} aria-label="Close component details" data-testid="button-close-drawer-overlay" />
       <div className="relative z-10 flex h-[92dvh] w-full max-w-6xl flex-col overflow-hidden rounded-t-[24px] border bg-[#f7f2ea] shadow-[0_30px_100px_rgba(28,30,42,.3)] sm:h-[88dvh] sm:rounded-[24px]" style={{ borderColor: 'var(--line)' }}>
         <header className="flex flex-wrap items-center justify-between gap-4 border-b px-5 py-4 md:px-7" style={{ borderColor: 'var(--line)' }}>
-          <div className="flex min-w-0 items-center gap-3"><div className="mono rounded-md bg-[#242a3b] px-2 py-1 text-[10px] text-[#f5f0e8]">{String(component.id).padStart(3, '0')}</div><div className="min-w-0"><h2 className="display truncate text-lg font-bold tracking-[-.04em] md:text-xl">{component.title}</h2><p className="truncate text-xs text-[#85848a]">{component.categoryName} <span className="mx-1">·</span> standalone HTML file</p></div></div>
+           <div className="flex min-w-0 items-center gap-3"><div className="mono rounded-md bg-[#242a3b] px-2 py-1 text-[10px] text-[#f5f0e8]">{String(component.id).padStart(3, '0')}</div><div className="min-w-0"><h2 className="display truncate text-lg font-bold tracking-[-.04em] md:text-xl">{component.title}</h2><p className="truncate text-xs text-[#85848a]">{component.categoryName} <span className="mx-1">·</span> {component.isLive ? 'standalone HTML file' : 'preview image'}</p></div></div>
           <div className="flex items-center gap-2"><button onClick={onFavorite} className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold transition ${favorite ? 'border-[#ec684d]/30 bg-[#ec684d] text-white' : 'bg-[#fffdf8] text-[#6f7078] hover:text-[var(--coral)]'}`} style={{ borderColor: favorite ? undefined : 'var(--line)' }} data-testid="button-drawer-favorite"><Heart size={14} fill={favorite ? 'currentColor' : 'none'} /><span className="hidden sm:inline">{favorite ? 'Saved' : 'Save'}</span></button><a href={GUMROAD_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-lg border bg-[#242a3b] px-3 py-2 text-xs font-semibold text-[#f5f0e8] transition hover:bg-[#30374d]" style={{ borderColor: 'var(--line)' }} aria-label="Get the source code on Gumroad" data-testid="link-get-source-code"><Code2 size={14} /><span>Get Source Code</span></a><button onClick={onClose} className="grid size-9 place-items-center rounded-lg border bg-[#fffdf8] text-[#6f7078] transition hover:bg-[#242a3b] hover:text-white" style={{ borderColor: 'var(--line)' }} aria-label="Close component details" data-testid="button-close-drawer"><X size={17} /></button></div>
         </header>
         <div className="flex items-center justify-between gap-4 border-b px-5 py-3 md:px-7" style={{ borderColor: 'var(--line)' }}>
-          <div className="inline-flex items-center gap-2 rounded-lg border bg-[#fffdf8] px-3 py-2 text-xs font-semibold text-[#242a3b]" style={{ borderColor: 'var(--line)' }}><Eye size={14} /> Live preview</div>
-          <div className="hidden items-center gap-2 text-[10px] text-[#918e89] sm:flex"><span className="size-1.5 rounded-full bg-[var(--moss)]" /> interactive preview <span className="mx-1 text-[#c2bdb4]">·</span> source code available on Gumroad</div>
+           <div className="inline-flex items-center gap-2 rounded-lg border bg-[#fffdf8] px-3 py-2 text-xs font-semibold text-[#242a3b]" style={{ borderColor: 'var(--line)' }}><Eye size={14} /> {component.isLive ? 'Live preview' : 'Preview image'}</div>
+           <div className="hidden items-center gap-2 text-[10px] text-[#918e89] sm:flex"><span className={`size-1.5 rounded-full ${component.isLive ? 'bg-[var(--moss)]' : 'bg-[#b47b24]'}`} /> {component.isLive ? 'interactive preview' : 'static visual preview'} <span className="mx-1 text-[#c2bdb4]">·</span> source code available on Gumroad</div>
         </div>
         <div className="min-h-0 flex-1 bg-[#e7e0d6] p-3 md:p-5">
-          <div className="relative h-full overflow-hidden rounded-xl border bg-[#fbf8f2] shadow-inner" style={{ borderColor: 'rgba(36,42,59,.15)' }}><iframe src={component.sourcePath} title={`${component.title} interactive preview`} sandbox="allow-scripts allow-forms" className="h-full w-full border-0" /></div>
+           <div className="relative h-full overflow-hidden rounded-xl border bg-[#fbf8f2] shadow-inner" style={{ borderColor: 'rgba(36,42,59,.15)' }}>
+             {component.isLive ? (
+               <iframe src={component.sourcePath} title={`${component.title} interactive preview`} sandbox="allow-scripts allow-forms" className="h-full w-full border-0" />
+             ) : (
+               <img src={component.previewPath} alt={`${component.title} preview`} className="h-full w-full object-contain object-top" />
+             )}
+           </div>
         </div>
         <footer className="flex items-center justify-between gap-4 border-t px-5 py-3 text-[11px] text-[#85848a] md:px-7" style={{ borderColor: 'var(--line)' }}><span className="truncate">{component.description}</span><a href={GUMROAD_URL} target="_blank" rel="noreferrer" className="mono shrink-0 text-[10px] text-[var(--coral)] transition hover:underline" data-testid="footer-get-source-code">GET SOURCE CODE ↗</a></footer>
       </div>
