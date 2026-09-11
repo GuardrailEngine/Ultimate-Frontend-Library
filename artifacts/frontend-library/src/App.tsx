@@ -25,6 +25,7 @@ import { Route, Router as WouterRouter, Switch, useLocation } from 'wouter';
 
 const queryClient = new QueryClient();
 const GUMROAD_URL = 'https://simochakir.gumroad.com/l/szcvz';
+const GITHUB_URL = 'https://github.com/GuardrailEngine/Ultimate-Frontend-Library';
 const componentBasePath = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/components`;
 
 type ComponentItem = {
@@ -346,7 +347,7 @@ function LibraryHome() {
                 <Sparkles size={14} /> Surprise me
               </button>
               <a
-                href="https://github.com"
+                href={GITHUB_URL}
                 target="_blank"
                 rel="noreferrer"
                 className="grid size-9 place-items-center rounded-xl border bg-[rgba(255,252,247,.7)] transition hover:-translate-y-0.5 hover:bg-white"
@@ -377,8 +378,16 @@ function LibraryHome() {
                 </h1>
                 <div className="fade-up fade-up-delay-2 mt-8 flex max-w-3xl flex-col justify-between gap-8 md:flex-row md:items-end">
                   <p className="max-w-md text-[15px] leading-7 text-[#666770]">
-                    One hundred complete, copy-ready interface pieces. Browse the raw HTML, see it run, and take the useful bit with you.
+                    A visual field guide to 100 finished interface pieces. Explore the interactions, compare categories, and decide whether the complete library belongs in your next product.
                   </p>
+                  <div className="flex flex-wrap gap-3">
+                    <a href={GUMROAD_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-[#242a3b] px-4 py-3 text-xs font-semibold text-[#f5f0e8] transition hover:-translate-y-0.5 hover:bg-[#30374d]" data-testid="link-buy-library">
+                      Get the complete library <ArrowUpRight size={14} />
+                    </a>
+                    <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border bg-[rgba(255,252,247,.7)] px-4 py-3 text-xs font-semibold text-[#242a3b] transition hover:-translate-y-0.5 hover:bg-white" style={{ borderColor: 'var(--line)' }} data-testid="link-repository">
+                      View on GitHub <Github size={14} />
+                    </a>
+                  </div>
                   <div className="flex items-center gap-4 text-xs text-[#74747a]">
                     <span className="mono rounded-md bg-[#242a3b] px-2 py-1 text-[11px] text-[#f5f0e8]">HTML</span>
                     <span className="mono rounded-md bg-[var(--coral)] px-2 py-1 text-[11px] text-white">CSS</span>
